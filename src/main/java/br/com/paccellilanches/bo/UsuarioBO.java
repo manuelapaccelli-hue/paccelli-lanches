@@ -42,4 +42,13 @@ public class UsuarioBO {
                 .map(usuario -> new PerfilDTO(usuario.nome, usuario.email, usuario.telefone,
                         usuario.cpf, usuario.dataNascimento));
     }
+
+    public boolean isAdmin(String email) {
+        if (email == null) {
+            return false;
+        }
+        return usuarioDAO.buscarPorEmail(email)
+                .map(usuario -> usuario.admin)
+                .orElse(false);
+    }
 }

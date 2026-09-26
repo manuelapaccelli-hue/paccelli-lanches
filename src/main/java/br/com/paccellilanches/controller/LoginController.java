@@ -63,8 +63,8 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
     public SessaoStatusDTO status(@CookieParam(COOKIE_SESSAO) String sessionId) {
         return sessaoBO.emailDaSessao(sessionId)
-                .map(email -> new SessaoStatusDTO(true, email))
-                .orElse(new SessaoStatusDTO(false, null));
+                .map(email -> new SessaoStatusDTO(true, email, usuarioBO.isAdmin(email)))
+                .orElse(new SessaoStatusDTO(false, null, false));
     }
 
     @DELETE

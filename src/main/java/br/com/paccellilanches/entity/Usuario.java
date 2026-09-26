@@ -16,6 +16,7 @@ public class Usuario extends PanacheEntity {
     public String cpf;
     public LocalDate dataNascimento;
     public String senha;
+    public boolean admin = false;
 
     public Usuario() {
     }

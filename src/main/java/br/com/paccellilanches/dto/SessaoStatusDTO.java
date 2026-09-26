@@ -1,4 +1,4 @@
 package br.com.paccellilanches.dto;
 
-public record SessaoStatusDTO(boolean logado, String email) {
+public record SessaoStatusDTO(boolean logado, String email, boolean admin) {
 }
