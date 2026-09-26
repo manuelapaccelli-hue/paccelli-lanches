@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • Auditoria</title>
+    <link rel="stylesheet" href="auditoria.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+    <div class="info-box">
+        <h2>🛡️ Log de Auditoria</h2>
+        <p class="subtitulo">Registro de todas as ações executadas no sistema.</p>
+
+        <table class="audit-table">
+            <thead>
+            <tr>
+                <th>Data/Hora</th>
+                <th>Usuário</th>
+                <th>Ação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#for log in logs}
+            <tr>
+                <td>{log.dataHora}</td>
+                <td>{log.usuario}</td>
+                <td>{log.acao}</td>
+            </tr>
+            {#else}
+            <tr>
+                <td colspan="3" class="vazio">Nenhuma ação registrada até o momento.</td>
+            </tr>
+            {/for}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#include footer /}
+
+</body>
+</html>

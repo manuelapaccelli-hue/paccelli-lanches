@@ -1,0 +1,41 @@
+/* FOOTER PADRONIZADO (ESTILO NAVBAR) */
+footer {
+    background: rgba(17, 17, 17, 0.95);
+    backdrop-filter: blur(12px);
+    color: #e0e0e0;
+    text-align: center;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    width: 100%;
+    
+    /* Altura super reduzida para 6% da altura da tela */
+    height: 6vh;
+    min-height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    /* Empurra o rodapé para o fim da página se o conteúdo for curto */
+    margin-top: auto;
+}
+
+footer p {
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+footer strong {
+    color: white;
+    font-size: 0.95rem;
+}
+
+footer a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+footer a:hover {
+    color: white;
+    text-decoration: underline;
+}

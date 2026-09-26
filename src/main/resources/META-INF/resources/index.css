@@ -1,0 +1,106 @@
+:root {
+    --primary: #e4002b;
+    --accent: #f8b500;
+    --dark: #111111;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow-x: hidden;
+    background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("pacceli3.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* HERO SECTION */
+.hero {
+    height: calc(94vh - 80px);
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: relative;
+}
+
+.hero-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.hero-text h1 {
+    font-size: clamp(3rem, 7vw, 5.2rem);
+    line-height: 1.05;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.hero-text .highlight {
+    color: var(--accent);
+}
+
+.hero-text p {
+    font-size: 1.35rem;
+    max-width: 460px;
+    margin-bottom: 40px;
+    opacity: 0.95;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+}
+
+.hero-buttons button {
+    padding: 18px 36px;
+    font-size: 18px;
+    border-radius: 50px;
+}
+
+.hero-image {
+    text-align: center;
+}
+
+.hero-image img {
+    width: 100%;
+    max-width: 460px;
+    border-radius: 30px;
+    border: 14px solid rgba(255,255,255,0.9);
+    box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+    animation: float 3.5s ease-in-out infinite;
+}
+
+/* RESPONSIVIDADE PARA DISPOSITIVOS MÓVEIS */
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        padding: 60px 20px;
+    }
+    .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+    }
+    .hero-text p {
+        margin: 0 auto 30px auto;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    .hero-image img {
+        max-width: 320px;
+    }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • O Rei do Hambúrguer</title>
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<!-- HERO / PÁGINA INICIAL -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>O MELHOR HAMBÚRGUER<br>DA CIDADE</h1>
+            <p>Sabor explosivo, ingredientes frescos e entrega em menos de 30 minutos.</p>
+
+            <div class="hero-buttons">
+                <a href="/cardapio" class="btn-primary" style="display:inline-block; text-decoration:none; text-align:center;">
+                    Ver Cardápio Completo
+                </a>
+                <button onclick="openWhatsApp()" class="btn-primary" style="background: #25D366;">
+                    📲 Pedir pelo WhatsApp
+                </button>
+            </div>
+        </div>
+
+        <div class="hero-image">
+            <img src="pacceli2.jpg" alt="Delicioso Hambúrguer Paccelli">
+        </div>
+    </div>
+</section>
+
+{#include footer /}
+
+<script>
+    // Mensagem no console indicando carregamento da página
+    console.log("%c✅ Página Inicial do Paccelli Lanches carregada com sucesso!", "color:#e4002b; font-size:16px; font-weight:bold");
+</script>
+</body>
+</html>
