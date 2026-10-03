@@ -1,8 +1,8 @@
 package br.com.paccellilanches.controller;
 
+import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.UsuarioBO;
 import br.com.paccellilanches.dto.CadastroDTO;
-import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -17,7 +17,7 @@ import jakarta.ws.rs.core.Response;
 public class CadastroController {
 
     @Inject
-    Template cadastro;
+    PaginaBO paginaBO;
 
     @Inject
     UsuarioBO usuarioBO;
@@ -25,21 +25,14 @@ public class CadastroController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return cadastro.instance();
+        return paginaBO.cadastro();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cadastrar(CadastroDTO request) {
-        String erro = usuarioBO.cadastrar(request);
-
-        if (erro != null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(erro)
-                    .build();
-        }
-
+        usuarioBO.cadastrar(request);
         return Response.status(Response.Status.CREATED).build();
     }
 }

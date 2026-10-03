@@ -12,6 +12,7 @@
             <a href="promocoes">Promoções</a>
             <a href="contato">Contato</a>
             <a id="auditoriaLink" href="auditoria" style="display:none;">Auditoria</a>
+            <a id="usuariosLink" href="usuarios" style="display:none;">Usuários</a>
         </nav>
 
         <div class="header-actions">
@@ -40,6 +41,7 @@
     (function() {
         const authLink = document.getElementById('authLink');
         const auditoriaLink = document.getElementById('auditoriaLink');
+        const usuariosLink = document.getElementById('usuariosLink');
 
         fetch('/login/status')
             .then(function(response) { return response.json(); })
@@ -55,6 +57,9 @@
                 }
                 if (auditoriaLink) {
                     auditoriaLink.style.display = status.admin ? 'inline-block' : 'none';
+                }
+                if (usuariosLink) {
+                    usuariosLink.style.display = status.admin ? 'inline-block' : 'none';
                 }
             })
             .catch(function() {

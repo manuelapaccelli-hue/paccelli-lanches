@@ -7,6 +7,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Guarda as sessões abertas em memória (sessionId -> e-mail do usuário).
+ */
 @ApplicationScoped
 public class SessaoBO {
 

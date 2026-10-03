@@ -2,6 +2,7 @@ package br.com.paccellilanches.audit;
 
 import br.com.paccellilanches.bo.AuditoriaBO;
 import br.com.paccellilanches.bo.SessaoBO;
+import br.com.paccellilanches.controller.CookieSessao;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;
@@ -19,8 +20,6 @@ import jakarta.ws.rs.ext.Provider;
 @Priority(Priorities.USER)
 public class AuditFilter implements ContainerRequestFilter {
 
-    private static final String COOKIE_SESSAO = "sessionId";
-
     @Inject
     AuditoriaBO auditoriaBO;
 
@@ -35,7 +34,7 @@ public class AuditFilter implements ContainerRequestFilter {
     }
 
     private String obterUsuario(ContainerRequestContext requestContext) {
-        Cookie cookie = requestContext.getCookies().get(COOKIE_SESSAO);
+        Cookie cookie = requestContext.getCookies().get(CookieSessao.NOME);
         if (cookie == null) {
             return "Anônimo";
         }

@@ -1,0 +1,6 @@
+#surefire_0
+#Sat Oct 03 10:18:24 BRT 2026
+basedir=/home/hapoliano/dev/ifg/pw-manu/paccelli-lanches-manuela-hue/paccelli-lanches
+java.util.logging.manager=org.jboss.logmanager.LogManager
+localRepository=/home/hapoliano/.m2/repository
+maven.home=/home/hapoliano/.m2/wrapper/dists/apache-maven-3.9.16/56ba1f9f

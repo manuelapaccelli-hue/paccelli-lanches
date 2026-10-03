@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • Usuários</title>
+    <link rel="stylesheet" href="auditoria.css">
+    <link rel="stylesheet" href="usuarios.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+    <div class="info-box">
+        <h2>👥 Usuários</h2>
+        <p class="subtitulo">Gerencie os usuários do sistema: telefone, permissão de administrador e exclusão.</p>
+        <p id="mensagem" class="mensagem" hidden></p>
+
+        <table class="audit-table">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Administrador</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#for usuario in usuarios}
+            <tr data-id="{usuario.id}">
+                <td>{usuario.nome}</td>
+                <td>{usuario.email}{#if usuario.email == emailLogado} <span class="voce">(você)</span>{/if}</td>
+                <td>
+                    <div class="telefone-edit">
+                        <input type="tel" class="input-telefone" value="{usuario.telefone ?: ''}" placeholder="(XX) XXXXX-XXXX">
+                        <button type="button" class="btn-acao btn-salvar">Salvar</button>
+                    </div>
+                </td>
+                <td>
+                    <label class="switch">
+                        <input type="checkbox" class="toggle-admin"
+                               {#if usuario.admin}checked{/if}
+                               {#if usuario.email == emailLogado}disabled title="Você não pode remover a sua própria permissão"{/if}>
+                        <span class="slider"></span>
+                    </label>
+                </td>
+                <td>
+                    {#if usuario.email != emailLogado}
+                    <button type="button" class="btn-acao btn-excluir">Excluir</button>
+                    {/if}
+                </td>
+            </tr>
+            {#else}
+            <tr>
+                <td colspan="5" class="vazio">Nenhum usuário cadastrado.</td>
+            </tr>
+            {/for}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#include footer /}
+
+<script src="usuario.js"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 package br.com.paccellilanches.controller;
 
-import io.quarkus.qute.Template;
+import br.com.paccellilanches.bo.PaginaBO;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -12,11 +12,11 @@ import jakarta.ws.rs.core.MediaType;
 public class PromocoesController {
 
     @Inject
-    Template promocoes;
+    PaginaBO paginaBO;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return promocoes.instance();
+        return paginaBO.promocoes();
     }
 }
