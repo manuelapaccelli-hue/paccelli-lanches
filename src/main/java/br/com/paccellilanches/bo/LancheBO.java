@@ -5,6 +5,7 @@ import br.com.paccellilanches.dto.CategoriaCardapioDTO;
 import br.com.paccellilanches.dto.LancheDTO;
 import br.com.paccellilanches.entity.CategoriaLanche;
 import br.com.paccellilanches.entity.Lanche;
+import br.com.paccellilanches.entity.Promocao;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -26,12 +27,19 @@ public class LancheBO {
     @Inject
     LancheDAO lancheDAO;
 
-    /** Lanches ativos agrupados por categoria, na ordem do cardápio; categorias vazias são omitidas. */
+    @Inject
+    PromocaoBO promocaoBO;
+
+    /**
+     * Lanches ativos agrupados por categoria, na ordem do cardápio; categorias vazias são omitidas.
+     * Lanches com promoção vigente trazem o preço promocional.
+     */
     public List<CategoriaCardapioDTO> cardapio() {
+        Map<Long, Promocao> promocoes = promocaoBO.promocoesVigentesPorLanche();
         Map<CategoriaLanche, List<LancheDTO>> porCategoria = lancheDAO.listarAtivos()
                 .stream()
                 .collect(Collectors.groupingBy(lanche -> lanche.categoria,
-                        Collectors.mapping(this::paraDTO, Collectors.toList())));
+                        Collectors.mapping(lanche -> paraDTO(lanche, promocoes.get(lanche.id)), Collectors.toList())));
 
         return Arrays.stream(CategoriaLanche.values())
                 .filter(porCategoria::containsKey)
@@ -63,7 +71,8 @@ public class LancheBO {
         ).forEach(lancheDAO::salvar);
     }
 
-    private LancheDTO paraDTO(Lanche lanche) {
-        return new LancheDTO(lanche.id, lanche.nome, lanche.descricao, lanche.preco);
+    private LancheDTO paraDTO(Lanche lanche, Promocao promocao) {
+        return new LancheDTO(lanche.id, lanche.nome, lanche.descricao, lanche.preco,
+                promocao == null ? null : promocao.precoPromocional);
     }
 }

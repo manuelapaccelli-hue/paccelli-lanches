@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="cardapio.css">
   <link rel="stylesheet" href="navbar.css">
   <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="carrinho.css">
 </head>
 <body>
 
@@ -24,7 +25,14 @@
         <div class="item-nome">{lanche.nome}</div>
         <div class="item-desc">{lanche.descricao}</div>
       </div>
-      <div class="item-preco">{lanche.precoFormatado}</div>
+      <div class="item-preco">
+        {#if lanche.emPromocao}
+        <span class="preco-riscado">{lanche.precoFormatado}</span>
+        {lanche.precoPromocionalFormatado}
+        {#else}
+        {lanche.precoFormatado}
+        {/if}
+      </div>
       <button type="button" class="btn-adicionar" aria-label="Adicionar {lanche.nome} ao carrinho">+ Adicionar</button>
     </div>
     {/for}

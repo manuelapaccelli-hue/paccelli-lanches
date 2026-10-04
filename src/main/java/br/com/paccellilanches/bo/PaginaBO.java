@@ -25,6 +25,9 @@ public class PaginaBO {
     LancheBO lancheBO;
 
     @Inject
+    PromocaoBO promocaoBO;
+
+    @Inject
     Template index;
 
     @Inject
@@ -67,7 +70,7 @@ public class PaginaBO {
     }
 
     public TemplateInstance promocoes() {
-        return promocoes.instance();
+        return promocoes.data("promocoes", promocaoBO.vigentes());
     }
 
     public TemplateInstance login() {
