@@ -22,6 +22,10 @@ public class LancheDAO {
         return Lanche.find("id = ?1 and ativo = true", id).firstResultOptional();
     }
 
+    public Optional<Lanche> buscarAtivoPorNome(String nome) {
+        return Lanche.find("nome = ?1 and ativo = true", nome).firstResultOptional();
+    }
+
     public boolean existeAlgum() {
         return Lanche.count() > 0;
     }

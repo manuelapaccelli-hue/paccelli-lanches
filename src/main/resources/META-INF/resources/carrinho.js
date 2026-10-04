@@ -1,4 +1,4 @@
-// Carrinho de compras: botões "Adicionar" do cardápio e a tela /carrinho
+// Carrinho de compras: botões "Adicionar" (cardápio e promoções) e a tela /carrinho
 (function() {
     const aviso = document.getElementById('aviso');
     let avisoTimer;
@@ -36,10 +36,10 @@
         }
     }
 
-    // ----- Cardápio: adicionar itens -----
+    // ----- Cardápio e promoções: adicionar itens -----
     document.querySelectorAll('.btn-adicionar').forEach(function(botao) {
         botao.addEventListener('click', function() {
-            const item = botao.closest('.item');
+            const item = botao.closest('[data-id]');
             const nome = item.querySelector('.item-nome').textContent;
             botao.disabled = true;
 
@@ -74,7 +74,8 @@
         carrinho.itens.forEach(function(item) {
             const linha = modelo.content.firstElementChild.cloneNode(true);
             linha.querySelector('.item-nome').textContent = item.nome;
-            linha.querySelector('.item-desc').textContent = item.precoUnitario + ' cada';
+            linha.querySelector('.item-desc').textContent = item.precoUnitario + ' cada'
+                + (item.precoOriginal ? ' (promoção, de ' + item.precoOriginal + ')' : '');
             linha.querySelector('.item-quantidade').textContent = item.quantidade;
             linha.querySelector('.item-preco').textContent = item.subtotal;
 

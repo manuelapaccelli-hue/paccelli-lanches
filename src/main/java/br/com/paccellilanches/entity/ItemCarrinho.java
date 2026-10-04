@@ -7,8 +7,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
-import java.math.BigDecimal;
-
 /**
  * Um lanche no carrinho de um usuário; cada lanche aparece uma vez por carrinho, com a sua quantidade.
  */
@@ -33,9 +31,5 @@ public class ItemCarrinho extends PanacheEntity {
         this.usuario = usuario;
         this.lanche = lanche;
         this.quantidade = quantidade;
-    }
-
-    public BigDecimal subtotal() {
-        return lanche.preco.multiply(BigDecimal.valueOf(quantidade));
     }
 }

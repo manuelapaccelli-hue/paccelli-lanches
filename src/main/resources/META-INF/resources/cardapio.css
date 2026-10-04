@@ -95,49 +95,15 @@ h2 {
 }
 .btn-adicionar {
     margin-left: 20px;
-    padding: 10px 18px;
-    border: none;
-    border-radius: 30px;
-    background: var(--primary);
-    color: #fff;
-    font-family: inherit;
+}
+
+.preco-riscado {
+    display: block;
     font-size: 0.95rem;
-    font-weight: 700;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.btn-adicionar:hover {
-    filter: brightness(1.15);
-}
-
-.btn-adicionar:disabled {
-    opacity: 0.6;
-    cursor: wait;
-}
-
-.aviso {
-    position: fixed;
-    bottom: 95px;
-    right: 20px;
-    max-width: calc(100% - 40px);
-    padding: 14px 20px;
-    border-radius: 12px;
-    background: rgba(20, 20, 20, 0.95);
-    border-left: 4px solid #2ecc71;
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    z-index: 101;
-}
-
-.aviso.erro {
-    border-left-color: #e74c3c;
-}
-
-.aviso a {
-    color: var(--accent);
-    font-weight: 600;
+    font-weight: 400;
+    color: #aaa;
+    text-decoration: line-through;
+    text-align: right;
 }
 
 @media (max-width: 600px) {

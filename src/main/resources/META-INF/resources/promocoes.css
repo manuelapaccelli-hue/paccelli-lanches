@@ -111,3 +111,24 @@ h2 {
     box-shadow: 0 5px 20px rgba(0,0,0,0.4);
     text-decoration: none;
 }
+
+.promo-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+}
+.promo-validade {
+    color: #ccc;
+    font-size: 0.95rem;
+}
+.promo-vazia {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    color: #ddd;
+    font-size: 1.1rem;
+}

@@ -9,6 +9,7 @@ import br.com.paccellilanches.dto.Moeda;
 import br.com.paccellilanches.dto.QuantidadeDTO;
 import br.com.paccellilanches.entity.ItemCarrinho;
 import br.com.paccellilanches.entity.Lanche;
+import br.com.paccellilanches.entity.Promocao;
 import br.com.paccellilanches.entity.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Regras do carrinho de compras: cada usuário logado tem o seu, guardado no banco.
@@ -34,18 +36,23 @@ public class CarrinhoBO {
     @Inject
     AutenticacaoBO autenticacaoBO;
 
+    @Inject
+    PromocaoBO promocaoBO;
+
+    /** Carrinho do usuário com os preços de hoje: lanches em promoção entram com o desconto. */
     public CarrinhoDTO carrinho(String sessionId) {
         Usuario usuario = autenticacaoBO.exigirLogado(sessionId);
         List<ItemCarrinho> itens = itemCarrinhoDAO.listarDoUsuario(usuario);
+        Map<Long, Promocao> promocoes = promocaoBO.promocoesVigentesPorLanche();
 
         BigDecimal total = itens.stream()
-                .map(ItemCarrinho::subtotal)
+                .map(item -> subtotal(item, promocoes))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         int quantidadeItens = itens.stream()
                 .mapToInt(item -> item.quantidade)
                 .sum();
 
-        return new CarrinhoDTO(itens.stream().map(this::paraDTO).toList(), quantidadeItens, Moeda.formatar(total));
+        return new CarrinhoDTO(itens.stream().map(item -> paraDTO(item, promocoes)).toList(), quantidadeItens, Moeda.formatar(total));
     }
 
     /** Adiciona uma unidade do lanche; se ele já estiver no carrinho, soma à quantidade. */
@@ -87,8 +94,16 @@ public class CarrinhoBO {
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Item não encontrado no carrinho."));
     }
 
-    private ItemCarrinhoDTO paraDTO(ItemCarrinho item) {
-        return new ItemCarrinhoDTO(item.lanche.id, item.lanche.nome, item.lanche.descricao, item.quantidade,
-                Moeda.formatar(item.lanche.preco), Moeda.formatar(item.subtotal()));
+    private BigDecimal subtotal(ItemCarrinho item, Map<Long, Promocao> promocoes) {
+        return promocaoBO.precoVigente(item.lanche, promocoes).multiply(BigDecimal.valueOf(item.quantidade));
+    }
+
+    private ItemCarrinhoDTO paraDTO(ItemCarrinho item, Map<Long, Promocao> promocoes) {
+        Lanche lanche = item.lanche;
+        boolean emPromocao = promocoes.containsKey(lanche.id);
+        return new ItemCarrinhoDTO(lanche.id, lanche.nome, lanche.descricao, item.quantidade,
+                Moeda.formatar(promocaoBO.precoVigente(lanche, promocoes)),
+                emPromocao ? Moeda.formatar(lanche.preco) : null,
+                Moeda.formatar(subtotal(item, promocoes)));
     }
 }
