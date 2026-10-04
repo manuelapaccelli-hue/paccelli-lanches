@@ -106,8 +106,8 @@
 
     <!-- Exibido enquanto o carrinho não tiver itens -->
     <div id="carrinhoVazio" class="carrinho-vazio">
-      <p>Seu carrinho está vazio.</p>
-      <a href="cardapio">Ver o cardápio</a>
+      <p id="carrinhoVazioTexto">Seu carrinho está vazio.</p>
+      <a id="carrinhoVazioLink" href="cardapio">Ver o cardápio</a>
     </div>
 
     <!-- Lista dos itens adicionados (preenchida a partir do modelo abaixo) -->
@@ -117,7 +117,7 @@
   <div class="cardapio-section">
     <div class="resumo">
       <div class="resumo-total">Total: <span id="carrinhoTotal">R$ 0,00</span></div>
-      <button type="button" id="finalizarPedido" class="btn-finalizar" disabled>Finalizar pedido</button>
+      <button type="button" id="finalizarPedido" class="btn-finalizar" disabled title="Em breve">Finalizar pedido</button>
     </div>
   </div>
 
@@ -140,7 +140,10 @@
   </div>
 </template>
 
+<div id="aviso" class="aviso" role="status" hidden></div>
+
 {#include footer /}
+<script src="carrinho.js"></script>
 <!-- Botão WhatsApp -->
 <a href="https://wa.me/5562999999999" target="_blank" class="whatsapp">
   💬
