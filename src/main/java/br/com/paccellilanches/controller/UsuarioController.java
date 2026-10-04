@@ -2,7 +2,7 @@ package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.UsuarioBO;
-import br.com.paccellilanches.dto.AdminDTO;
+import br.com.paccellilanches.dto.AlterarTipoDTO;
 import br.com.paccellilanches.dto.TelefoneDTO;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
@@ -33,11 +33,11 @@ public class UsuarioController {
     }
 
     @PUT
-    @Path("/{id}/admin")
+    @Path("/{id}/tipo")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarAdmin(@CookieParam(CookieSessao.NOME) String sessionId,
-                                 @PathParam("id") Long id, AdminDTO request) {
-        usuarioBO.alterarAdmin(sessionId, id, request);
+    public Response alterarTipo(@CookieParam(CookieSessao.NOME) String sessionId,
+                                @PathParam("id") Long id, AlterarTipoDTO request) {
+        usuarioBO.alterarTipo(sessionId, id, request);
         return Response.noContent().build();
     }
 

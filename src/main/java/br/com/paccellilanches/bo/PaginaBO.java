@@ -89,6 +89,7 @@ public class PaginaBO {
     public TemplateInstance usuarios(String sessionId) {
         SessaoStatusDTO sessao = autenticacaoBO.status(sessionId);
         return usuarios.data("usuarios", usuarioBO.listarAtivos(sessionId))
+                .data("tipos", usuarioBO.listarTipos())
                 .data("emailLogado", sessao.email());
     }
 

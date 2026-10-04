@@ -20,49 +20,26 @@
     font-size: 0.85rem;
 }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 46px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    inset: 0;
+.select-tipo {
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-family: inherit;
     cursor: pointer;
-    background: rgba(255,255,255,0.25);
-    border-radius: 24px;
-    transition: background 0.2s;
 }
 
-.slider::before {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    left: 3px;
-    top: 3px;
-    background: #fff;
-    border-radius: 50%;
-    transition: transform 0.2s;
+.select-tipo option {
+    background: #222;
 }
 
-.switch input:checked + .slider {
-    background: #ffcc00;
+.select-tipo:focus {
+    outline: none;
+    border-color: #ffcc00;
 }
 
-.switch input:checked + .slider::before {
-    transform: translateX(22px);
-}
-
-.switch input:disabled + .slider {
+.select-tipo:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }

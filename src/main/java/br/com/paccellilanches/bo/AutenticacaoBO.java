@@ -38,7 +38,7 @@ public class AutenticacaoBO {
 
     public SessaoStatusDTO status(String sessionId) {
         return usuarioLogado(sessionId)
-                .map(usuario -> new SessaoStatusDTO(true, usuario.email, usuario.admin))
+                .map(usuario -> new SessaoStatusDTO(true, usuario.email, usuario.ehAdmin()))
                 .orElse(new SessaoStatusDTO(false, null, false));
     }
 
@@ -54,7 +54,7 @@ public class AutenticacaoBO {
 
     public Usuario exigirAdmin(String sessionId) {
         Usuario usuario = exigirLogado(sessionId);
-        if (!usuario.admin) {
+        if (!usuario.ehAdmin()) {
             throw new AcessoNegadoException("Acesso restrito a administradores.");
         }
         return usuario;

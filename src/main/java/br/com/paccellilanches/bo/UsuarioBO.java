@@ -1,11 +1,14 @@
 package br.com.paccellilanches.bo;
 
+import br.com.paccellilanches.dao.TipoUsuarioDAO;
 import br.com.paccellilanches.dao.UsuarioDAO;
-import br.com.paccellilanches.dto.AdminDTO;
+import br.com.paccellilanches.dto.AlterarTipoDTO;
 import br.com.paccellilanches.dto.CadastroDTO;
 import br.com.paccellilanches.dto.PerfilDTO;
 import br.com.paccellilanches.dto.TelefoneDTO;
+import br.com.paccellilanches.dto.TipoUsuarioDTO;
 import br.com.paccellilanches.dto.UsuarioResumoDTO;
+import br.com.paccellilanches.entity.TipoUsuario;
 import br.com.paccellilanches.entity.Usuario;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -23,6 +26,9 @@ public class UsuarioBO {
     UsuarioDAO usuarioDAO;
 
     @Inject
+    TipoUsuarioDAO tipoUsuarioDAO;
+
+    @Inject
     AutenticacaoBO autenticacaoBO;
 
     @Transactional
@@ -35,7 +41,7 @@ public class UsuarioBO {
         }
 
         usuarioDAO.salvar(new Usuario(request.nome(), request.email(), request.telefone(),
-                request.cpf(), request.dataNascimento(), request.senha()));
+                request.cpf(), request.dataNascimento(), request.senha(), buscarTipo(TipoUsuario.COMUM)));
     }
 
     public PerfilDTO perfil(String sessionId) {
@@ -49,20 +55,29 @@ public class UsuarioBO {
         return usuarioDAO.listarAtivos()
                 .stream()
                 .map(usuario -> new UsuarioResumoDTO(usuario.id, usuario.nome, usuario.email,
-                        usuario.telefone, usuario.admin))
+                        usuario.telefone, usuario.tipo.nome))
+                .toList();
+    }
+
+    public List<TipoUsuarioDTO> listarTipos() {
+        return tipoUsuarioDAO.listarTodos()
+                .stream()
+                .map(tipo -> new TipoUsuarioDTO(tipo.nome, tipo.descricao))
                 .toList();
     }
 
     @Transactional
-    public void alterarAdmin(String sessionId, Long id, AdminDTO request) {
+    public void alterarTipo(String sessionId, Long id, AlterarTipoDTO request) {
         Usuario logado = autenticacaoBO.exigirAdmin(sessionId);
         Usuario usuario = buscarAtivo(id);
+        TipoUsuario tipo = tipoUsuarioDAO.buscarPorNome(request.tipo())
+                .orElseThrow(() -> new NegocioException("Tipo de usuário inválido."));
 
-        if (usuario.id.equals(logado.id) && !request.admin()) {
+        if (usuario.id.equals(logado.id) && !tipo.ehAdmin()) {
             throw new NegocioException("Você não pode remover a sua própria permissão de administrador.");
         }
 
-        usuario.admin = request.admin();
+        usuario.tipo = tipo;
     }
 
     @Transactional
@@ -78,7 +93,7 @@ public class UsuarioBO {
         usuario.telefone = telefone;
     }
 
-    /** Exclusão lógica: o usuário é desativado e perde a permissão de administrador. */
+    /** Exclusão lógica: o usuário é desativado e volta a ser do tipo comum. */
     @Transactional
     public void excluir(String sessionId, Long id) {
         Usuario logado = autenticacaoBO.exigirAdmin(sessionId);
@@ -89,7 +104,12 @@ public class UsuarioBO {
         }
 
         usuario.ativo = false;
-        usuario.admin = false;
+        usuario.tipo = buscarTipo(TipoUsuario.COMUM);
+    }
+
+    private TipoUsuario buscarTipo(String nome) {
+        return tipoUsuarioDAO.buscarPorNome(nome)
+                .orElseThrow(() -> new IllegalStateException("Tipo de usuário " + nome + " não cadastrado."));
     }
 
     private Usuario buscarAtivo(Long id) {

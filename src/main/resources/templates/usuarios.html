@@ -16,7 +16,7 @@
 <div class="container">
     <div class="info-box">
         <h2>👥 Usuários</h2>
-        <p class="subtitulo">Gerencie os usuários do sistema: telefone, permissão de administrador e exclusão.</p>
+        <p class="subtitulo">Gerencie os usuários do sistema: telefone, tipo de usuário e exclusão.</p>
         <p id="mensagem" class="mensagem" hidden></p>
 
         <table class="audit-table">
@@ -25,7 +25,7 @@
                 <th>Nome</th>
                 <th>E-mail</th>
                 <th>Telefone</th>
-                <th>Administrador</th>
+                <th>Tipo</th>
                 <th>Ações</th>
             </tr>
             </thead>
@@ -41,12 +41,12 @@
                     </div>
                 </td>
                 <td>
-                    <label class="switch">
-                        <input type="checkbox" class="toggle-admin"
-                               {#if usuario.admin}checked{/if}
-                               {#if usuario.email == emailLogado}disabled title="Você não pode remover a sua própria permissão"{/if}>
-                        <span class="slider"></span>
-                    </label>
+                    <select class="select-tipo" data-atual="{usuario.tipo}"
+                            {#if usuario.email == emailLogado}disabled title="Você não pode alterar o seu próprio tipo"{/if}>
+                        {#for tipo in tipos}
+                        <option value="{tipo.nome}" {#if tipo.nome == usuario.tipo}selected{/if}>{tipo.descricao}</option>
+                        {/for}
+                    </select>
                 </td>
                 <td>
                     {#if usuario.email != emailLogado}
