@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paccelli Lanches • Carrinho</title>
+  <link rel="stylesheet" href="cardapio.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="footer.css">
+  <style>
+    .carrinho-vazio {
+      text-align: center;
+      padding: 50px 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      color: #ddd;
+    }
+
+    .carrinho-vazio a {
+      display: inline-block;
+      margin-top: 15px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .quantidade {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: 20px;
+    }
+
+    .quantidade button,
+    .btn-remover {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .btn-remover {
+      margin-left: 15px;
+      background: rgba(231,76,60,0.6);
+    }
+
+    .resumo {
+      background: rgba(255,255,255,0.08);
+      border-radius: 15px;
+      padding: 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .resumo-total {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .resumo-total span {
+      color: var(--accent);
+    }
+
+    .btn-finalizar {
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-finalizar:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 600px) {
+      .item {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .quantidade,
+      .item-preco {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+
+  <div class="cardapio-section">
+    <h2>🛒 MEU CARRINHO</h2>
+
+    <!-- Exibido enquanto o carrinho não tiver itens -->
+    <div id="carrinhoVazio" class="carrinho-vazio">
+      <p>Seu carrinho está vazio.</p>
+      <a href="cardapio">Ver o cardápio</a>
+    </div>
+
+    <!-- Lista dos itens adicionados (preenchida a partir do modelo abaixo) -->
+    <div id="carrinhoItens"></div>
+  </div>
+
+  <div class="cardapio-section">
+    <div class="resumo">
+      <div class="resumo-total">Total: <span id="carrinhoTotal">R$ 0,00</span></div>
+      <button type="button" id="finalizarPedido" class="btn-finalizar" disabled>Finalizar pedido</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modelo de uma linha do carrinho -->
+<template id="itemCarrinhoModelo">
+  <div class="item">
+    <div class="item-info">
+      <div class="item-nome"></div>
+      <div class="item-desc"></div>
+    </div>
+    <div class="quantidade">
+      <button type="button" class="btn-diminuir" aria-label="Diminuir quantidade">−</button>
+      <span class="item-quantidade">1</span>
+      <button type="button" class="btn-aumentar" aria-label="Aumentar quantidade">+</button>
+    </div>
+    <div class="item-preco"></div>
+    <button type="button" class="btn-remover" aria-label="Remover item">✕</button>
+  </div>
+</template>
+
+{#include footer /}
+<!-- Botão WhatsApp -->
+<a href="https://wa.me/5562999999999" target="_blank" class="whatsapp">
+  💬
+</a>
+
+</body>
+</html>

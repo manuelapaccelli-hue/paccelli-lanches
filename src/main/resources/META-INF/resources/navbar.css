@@ -73,6 +73,24 @@ nav a:hover {
     gap: 16px;
 }
 
+.carrinho-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    font-size: 22px;
+    text-decoration: none;
+    transition: transform 0.3s, background 0.3s;
+}
+
+.carrinho-link:hover {
+    background: rgba(255,255,255,0.22);
+    transform: scale(1.08);
+}
+
 .btn-primary {
     background: linear-gradient(90deg, var(--primary), #ff3b3b);
     color: white;
