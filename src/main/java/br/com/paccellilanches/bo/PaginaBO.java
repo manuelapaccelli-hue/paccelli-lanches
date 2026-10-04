@@ -22,6 +22,9 @@ public class PaginaBO {
     AutenticacaoBO autenticacaoBO;
 
     @Inject
+    LancheBO lancheBO;
+
+    @Inject
     Template index;
 
     @Inject
@@ -48,12 +51,15 @@ public class PaginaBO {
     @Inject
     Template auditoria;
 
+    @Inject
+    Template carrinho;
+
     public TemplateInstance index() {
         return index.instance();
     }
 
     public TemplateInstance cardapio() {
-        return cardapio.instance();
+        return cardapio.data("categorias", lancheBO.cardapio());
     }
 
     public TemplateInstance contato() {
@@ -74,6 +80,10 @@ public class PaginaBO {
 
     public TemplateInstance perfil() {
         return perfil.instance();
+    }
+
+    public TemplateInstance carrinho() {
+        return carrinho.instance();
     }
 
     public TemplateInstance usuarios(String sessionId) {
