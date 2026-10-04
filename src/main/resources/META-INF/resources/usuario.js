@@ -1,4 +1,4 @@
-// Ações da tela /usuarios: permissão de administrador, telefone e exclusão
+// Ações da tela /usuarios: tipo de usuário, telefone e exclusão
 (function() {
     const mensagem = document.getElementById('mensagem');
 
@@ -27,21 +27,23 @@
         return elemento.closest('tr').dataset.id;
     }
 
-    document.querySelectorAll('.toggle-admin').forEach(function(checkbox) {
-        checkbox.addEventListener('change', function() {
-            const admin = checkbox.checked;
-            checkbox.disabled = true;
+    document.querySelectorAll('.select-tipo').forEach(function(select) {
+        select.addEventListener('change', function() {
+            const tipo = select.value;
+            const descricao = select.options[select.selectedIndex].text;
+            select.disabled = true;
 
-            enviar('/usuarios/' + idDaLinha(checkbox) + '/admin', 'PUT', { admin: admin })
+            enviar('/usuarios/' + idDaLinha(select) + '/tipo', 'PUT', { tipo: tipo })
                 .then(function() {
-                    mostrarMensagem(admin ? 'Usuário promovido a administrador.' : 'Permissão de administrador removida.', 'sucesso');
+                    select.dataset.atual = tipo;
+                    mostrarMensagem('Tipo do usuário alterado para ' + descricao + '.', 'sucesso');
                 })
                 .catch(function(erro) {
-                    checkbox.checked = !admin;
+                    select.value = select.dataset.atual;
                     mostrarMensagem(erro.message, 'erro');
                 })
                 .finally(function() {
-                    checkbox.disabled = false;
+                    select.disabled = false;
                 });
         });
     });
