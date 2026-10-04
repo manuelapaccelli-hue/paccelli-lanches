@@ -5,6 +5,7 @@ import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
+import java.util.Optional;
 
 @ApplicationScoped
 public class LancheDAO {
@@ -15,6 +16,10 @@ public class LancheDAO {
 
     public List<Lanche> listarAtivos() {
         return Lanche.list("ativo", Sort.ascending("id"), true);
+    }
+
+    public Optional<Lanche> buscarAtivoPorId(Long id) {
+        return Lanche.find("id = ?1 and ativo = true", id).firstResultOptional();
     }
 
     public boolean existeAlgum() {

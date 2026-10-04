@@ -25,6 +25,7 @@
         <div class="item-desc">{lanche.descricao}</div>
       </div>
       <div class="item-preco">{lanche.precoFormatado}</div>
+      <button type="button" class="btn-adicionar" aria-label="Adicionar {lanche.nome} ao carrinho">+ Adicionar</button>
     </div>
     {/for}
   </div>
@@ -41,7 +42,11 @@
 
 </div>
 
+<!-- Aviso exibido ao adicionar um item ao carrinho -->
+<div id="aviso" class="aviso" role="status" hidden></div>
+
 {#include footer /}
+<script src="carrinho.js"></script>
 <!-- Botão WhatsApp -->
 <a href="https://wa.me/5562999999999" target="_blank" class="whatsapp">
   💬
