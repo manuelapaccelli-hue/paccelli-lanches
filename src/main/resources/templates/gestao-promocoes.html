@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • Gestão das promoções</title>
+    <link rel="stylesheet" href="auditoria.css">
+    <link rel="stylesheet" href="usuarios.css">
+    <link rel="stylesheet" href="gestao.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+    <div class="info-box">
+        <h2>🏷️ Gestão das promoções</h2>
+        <p class="subtitulo">Crie descontos para os lanches do cardápio. A promoção vale entre as datas de início e de fim.</p>
+        <p id="mensagem" class="mensagem" hidden></p>
+
+        <form id="formGestao" class="form-gestao" data-url="/gestao-promocoes/promocoes" novalidate>
+            <h3 id="formTitulo" data-titulo-novo="Nova promoção" data-titulo-edicao="Editar promoção">Nova promoção</h3>
+            <input type="hidden" name="id">
+            <div class="campos">
+                <label class="campo-largo">Lanche
+                    <select name="lancheId" required>
+                        {#for lanche in lanches}
+                        <option value="{lanche.id}">{lanche.nome} ({lanche.precoFormatado})</option>
+                        {/for}
+                    </select>
+                </label>
+                <label>Preço promocional (R$)
+                    <input type="number" name="precoPromocional" min="0.01" step="0.01" required>
+                </label>
+                <label>Selo (opcional)
+                    <input type="text" name="selo" maxlength="15" placeholder="Ex.: TOP">
+                </label>
+                <label>Início
+                    <input type="date" name="dataInicio" required>
+                </label>
+                <label>Fim
+                    <input type="date" name="dataFim" required>
+                </label>
+            </div>
+            <p class="dica">Sem selo, o card mostra o percentual de desconto (ex.: 48% OFF).</p>
+            <div class="form-acoes">
+                <button type="submit" class="btn-acao btn-salvar">Salvar</button>
+                <button type="button" id="cancelarEdicao" class="btn-acao btn-cancelar" hidden>Cancelar edição</button>
+            </div>
+        </form>
+
+        <table class="audit-table">
+            <thead>
+            <tr>
+                <th>Lanche</th>
+                <th>Preço</th>
+                <th>Selo</th>
+                <th>Período</th>
+                <th>Situação</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#for promocao in promocoes}
+            <tr data-id="{promocao.id}" data-lanche-id="{promocao.lancheId}"
+                data-preco-promocional="{promocao.precoPromocional}" data-selo="{promocao.selo ?: ''}"
+                data-data-inicio="{promocao.dataInicio}" data-data-fim="{promocao.dataFim}">
+                <td><strong>{promocao.lancheNome}</strong></td>
+                <td class="nowrap">
+                    <span class="riscado">{promocao.precoOriginalFormatado}</span><br>
+                    {promocao.precoPromocionalFormatado}
+                </td>
+                <td>{promocao.selo ?: '—'}</td>
+                <td class="nowrap">{promocao.periodo}</td>
+                <td><span class="situacao situacao-{promocao.situacaoCss}">{promocao.situacao}</span></td>
+                <td class="acoes">
+                    <button type="button" class="btn-acao btn-salvar btn-editar">Editar</button>
+                    <button type="button" class="btn-acao btn-excluir btn-remover"
+                            data-confirmar="Encerrar a promoção de {promocao.lancheNome}?"
+                            data-sucesso="Promoção encerrada.">Encerrar</button>
+                </td>
+            </tr>
+            {#else}
+            <tr>
+                <td colspan="6" class="vazio">Nenhuma promoção cadastrada.</td>
+            </tr>
+            {/for}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#include footer /}
+
+<script src="gestao.js"></script>
+</body>
+</html>

@@ -2,7 +2,10 @@ package br.com.paccellilanches.bo;
 
 import br.com.paccellilanches.dao.LancheDAO;
 import br.com.paccellilanches.dto.CategoriaCardapioDTO;
+import br.com.paccellilanches.dto.CategoriaDTO;
 import br.com.paccellilanches.dto.LancheDTO;
+import br.com.paccellilanches.dto.LancheFormDTO;
+import br.com.paccellilanches.dto.LancheGestaoDTO;
 import br.com.paccellilanches.entity.CategoriaLanche;
 import br.com.paccellilanches.entity.Lanche;
 import br.com.paccellilanches.entity.Promocao;
@@ -14,6 +17,7 @@ import jakarta.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +33,9 @@ public class LancheBO {
 
     @Inject
     PromocaoBO promocaoBO;
+
+    @Inject
+    AutenticacaoBO autenticacaoBO;
 
     /**
      * Lanches ativos agrupados por categoria, na ordem do cardápio; categorias vazias são omitidas.
@@ -69,6 +76,80 @@ public class LancheBO {
                 new Lanche("Suco Natural 500ml", "Laranja, Maracujá, Limão ou Misto", new BigDecimal("9.90"), CategoriaLanche.BEBIDA),
                 new Lanche("Milk Shake 500ml", "Chocolate, Morango, Ovomaltine ou Baunilha", new BigDecimal("14.90"), CategoriaLanche.BEBIDA)
         ).forEach(lancheDAO::salvar);
+    }
+
+    /** Lanches ativos para a tela de gestão, na ordem do cardápio. */
+    public List<LancheGestaoDTO> listarParaGestao(String sessionId) {
+        autenticacaoBO.exigirAdmin(sessionId);
+        return lancheDAO.listarAtivos()
+                .stream()
+                .sorted(Comparator.comparing((Lanche lanche) -> lanche.categoria).thenComparing(lanche -> lanche.nome))
+                .map(lanche -> new LancheGestaoDTO(lanche.id, lanche.nome, lanche.descricao, lanche.preco,
+                        lanche.categoria.name(), lanche.categoria.titulo))
+                .toList();
+    }
+
+    public List<CategoriaDTO> categorias() {
+        return Arrays.stream(CategoriaLanche.values())
+                .map(categoria -> new CategoriaDTO(categoria.name(), categoria.titulo))
+                .toList();
+    }
+
+    @Transactional
+    public void cadastrar(String sessionId, LancheFormDTO request) {
+        autenticacaoBO.exigirAdmin(sessionId);
+        CategoriaLanche categoria = validar(request, null);
+        lancheDAO.salvar(new Lanche(request.nome().trim(), textoOuNulo(request.descricao()), request.preco(), categoria));
+    }
+
+    @Transactional
+    public void editar(String sessionId, Long id, LancheFormDTO request) {
+        autenticacaoBO.exigirAdmin(sessionId);
+        Lanche lanche = buscarAtivo(id);
+        CategoriaLanche categoria = validar(request, id);
+
+        lanche.nome = request.nome().trim();
+        lanche.descricao = textoOuNulo(request.descricao());
+        lanche.preco = request.preco();
+        lanche.categoria = categoria;
+    }
+
+    /** Exclusão lógica: o lanche sai do cardápio, dos carrinhos e das promoções, mas continua no banco. */
+    @Transactional
+    public void remover(String sessionId, Long id) {
+        autenticacaoBO.exigirAdmin(sessionId);
+        buscarAtivo(id).ativo = false;
+    }
+
+    /** Valida os dados do formulário e devolve a categoria escolhida; idAtual é null no cadastro. */
+    private CategoriaLanche validar(LancheFormDTO request, Long idAtual) {
+        if (request.nome() == null || request.nome().isBlank()) {
+            throw new NegocioException("Informe o nome do lanche.");
+        }
+        if (request.preco() == null || request.preco().signum() <= 0) {
+            throw new NegocioException("Informe um preço maior que zero.");
+        }
+        if (request.preco().scale() > 2) {
+            throw new NegocioException("O preço pode ter no máximo duas casas decimais.");
+        }
+        lancheDAO.buscarAtivoPorNome(request.nome().trim())
+                .filter(existente -> !existente.id.equals(idAtual))
+                .ifPresent(existente -> {
+                    throw new NegocioException("Já existe um lanche com este nome no cardápio.");
+                });
+        return Arrays.stream(CategoriaLanche.values())
+                .filter(categoria -> categoria.name().equals(request.categoria()))
+                .findFirst()
+                .orElseThrow(() -> new NegocioException("Escolha uma categoria válida."));
+    }
+
+    private Lanche buscarAtivo(Long id) {
+        return lancheDAO.buscarAtivoPorId(id)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Lanche não encontrado."));
+    }
+
+    private static String textoOuNulo(String texto) {
+        return texto == null || texto.isBlank() ? null : texto.trim();
     }
 
     private LancheDTO paraDTO(Lanche lanche, Promocao promocao) {

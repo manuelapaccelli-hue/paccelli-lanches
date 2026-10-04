@@ -6,19 +6,27 @@
             Paccelli <span>Lanches</span>
         </div>
 
-        <nav>
+        <nav id="menuPrincipal">
             <a href="/">Início</a>
             <a href="cardapio">Cardápio</a>
             <a href="promocoes">Promoções</a>
             <a href="contato">Contato</a>
-            <a id="auditoriaLink" href="auditoria" style="display:none;">Auditoria</a>
-            <a id="usuariosLink" href="usuarios" style="display:none;">Usuários</a>
+            <!-- Menu exibido só para administradores (ver /login/status) -->
+            <div id="menuAdmin" class="menu-admin" hidden>
+                <button type="button" class="menu-admin-botao" aria-haspopup="true" aria-expanded="false">Admin ▾</button>
+                <div class="menu-admin-lista">
+                    <a href="usuarios">Usuários</a>
+                    <a href="auditoria">Auditoria</a>
+                    <a href="gestao-cardapio">Editar cardápio</a>
+                    <a href="gestao-promocoes">Editar promoções</a>
+                </div>
+            </div>
         </nav>
 
         <div class="header-actions">
             <a href="/carrinho" class="carrinho-link" aria-label="Carrinho" title="Carrinho">🛒</a>
             <a id="authLink" href="/login" class="btn-primary" style="display:inline-block; text-decoration:none; text-align:center;">Entrar</a>
-            <button class="hamburger" onclick="toggleMobileMenu()">
+            <button type="button" class="hamburger" aria-label="Abrir menu" aria-controls="menuPrincipal" aria-expanded="false">
                 <span class="line"></span>
                 <span class="line"></span>
                 <span class="line"></span>
@@ -33,16 +41,69 @@
         window.open('https://wa.me/5511987654321?text=Olá! Quero fazer um pedido no Paccelli Lanches 🔥', '_blank');
     }
 
-    // Menu mobile simples
-    function toggleMobileMenu() {
-        alert("☰ Menu mobile\n\nInício | Cardápio | Promoções | Contato | Carrinho");
-    }
+    // Menu mobile (☰): abaixo de 768px os links da navbar viram um painel que abre sob o header
+    (function() {
+        const header = document.querySelector('header');
+        const botao = header.querySelector('.hamburger');
+        const menu = document.getElementById('menuPrincipal');
+
+        function abrirMenu(aberto) {
+            header.classList.toggle('menu-aberto', aberto);
+            botao.setAttribute('aria-expanded', aberto);
+            botao.setAttribute('aria-label', aberto ? 'Fechar menu' : 'Abrir menu');
+        }
+
+        botao.addEventListener('click', function(evento) {
+            evento.stopPropagation();
+            abrirMenu(!header.classList.contains('menu-aberto'));
+        });
+        menu.addEventListener('click', function(evento) {
+            if (evento.target.closest('a')) {
+                abrirMenu(false);
+            }
+        });
+        document.addEventListener('click', function(evento) {
+            if (!header.contains(evento.target)) {
+                abrirMenu(false);
+            }
+        });
+        document.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Escape') {
+                abrirMenu(false);
+            }
+        });
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                abrirMenu(false);
+            }
+        });
+    })();
 
     // Alterna o link de "Entrar" / "Perfil" de acordo com a sessão do servidor
     (function() {
         const authLink = document.getElementById('authLink');
-        const auditoriaLink = document.getElementById('auditoriaLink');
-        const usuariosLink = document.getElementById('usuariosLink');
+        const menuAdmin = document.getElementById('menuAdmin');
+        const menuAdminBotao = menuAdmin.querySelector('.menu-admin-botao');
+
+        function abrirMenuAdmin(aberto) {
+            menuAdmin.classList.toggle('aberto', aberto);
+            menuAdminBotao.setAttribute('aria-expanded', aberto);
+        }
+
+        menuAdminBotao.addEventListener('click', function(evento) {
+            evento.stopPropagation();
+            abrirMenuAdmin(!menuAdmin.classList.contains('aberto'));
+        });
+        document.addEventListener('click', function(evento) {
+            if (!menuAdmin.contains(evento.target)) {
+                abrirMenuAdmin(false);
+            }
+        });
+        document.addEventListener('keydown', function(evento) {
+            if (evento.key === 'Escape') {
+                abrirMenuAdmin(false);
+            }
+        });
 
         fetch('/login/status')
             .then(function(response) { return response.json(); })
@@ -56,12 +117,7 @@
                         authLink.href = '/login';
                     }
                 }
-                if (auditoriaLink) {
-                    auditoriaLink.style.display = status.admin ? 'inline-block' : 'none';
-                }
-                if (usuariosLink) {
-                    usuariosLink.style.display = status.admin ? 'inline-block' : 'none';
-                }
+                menuAdmin.hidden = !status.admin;
             })
             .catch(function() {
                 if (authLink) {

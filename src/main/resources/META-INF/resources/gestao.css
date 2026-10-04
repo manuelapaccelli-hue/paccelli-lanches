@@ -1,0 +1,131 @@
+/* Telas de gestão do cardápio e das promoções (complementa auditoria.css e usuarios.css) */
+.form-gestao {
+    background: rgba(0,0,0,0.25);
+    border-radius: 15px;
+    padding: 20px 25px;
+    margin-bottom: 30px;
+}
+
+.form-gestao h3 {
+    color: #ffcc00;
+    margin-bottom: 15px;
+}
+
+.campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.campos label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+    color: #ddd;
+}
+
+.campos .campo-largo {
+    grid-column: 1 / -1;
+}
+
+.campos input,
+.campos select,
+.campos textarea {
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.campos select option {
+    background: #222;
+}
+
+.campos input:focus,
+.campos select:focus,
+.campos textarea:focus {
+    outline: none;
+    border-color: #ffcc00;
+}
+
+.campos textarea {
+    resize: vertical;
+}
+
+.dica {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: 12px;
+}
+
+.form-acoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.btn-cancelar {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+}
+
+.detalhe {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-top: 4px;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.acoes {
+    white-space: nowrap;
+}
+
+.acoes .btn-acao + .btn-acao {
+    margin-left: 6px;
+}
+
+.riscado {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.85rem;
+}
+
+.situacao {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.15);
+}
+
+.situacao-vigente {
+    background: rgba(46, 204, 113, 0.25);
+    color: #7dffb0;
+}
+
+.situacao-agendada {
+    background: rgba(52, 152, 219, 0.25);
+    color: #9fd3ff;
+}
+
+.situacao-expirada,
+.situacao-sem-desconto {
+    background: rgba(231, 76, 60, 0.25);
+    color: #ff9b8f;
+}
+
+@media (max-width: 768px) {
+    .audit-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

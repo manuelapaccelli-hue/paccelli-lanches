@@ -1,6 +1,7 @@
 package br.com.paccellilanches.bo;
 
 import br.com.paccellilanches.dto.SessaoStatusDTO;
+import io.quarkus.qute.Location;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -57,6 +58,14 @@ public class PaginaBO {
     @Inject
     Template carrinho;
 
+    @Inject
+    @Location("gestao-cardapio.html")
+    Template gestaoCardapio;
+
+    @Inject
+    @Location("gestao-promocoes.html")
+    Template gestaoPromocoes;
+
     public TemplateInstance index() {
         return index.instance();
     }
@@ -98,5 +107,15 @@ public class PaginaBO {
 
     public TemplateInstance auditoria(String sessionId) {
         return auditoria.data("logs", auditoriaBO.listarTodos(sessionId));
+    }
+
+    public TemplateInstance gestaoCardapio(String sessionId) {
+        return gestaoCardapio.data("lanches", lancheBO.listarParaGestao(sessionId))
+                .data("categorias", lancheBO.categorias());
+    }
+
+    public TemplateInstance gestaoPromocoes(String sessionId) {
+        return gestaoPromocoes.data("promocoes", promocaoBO.listarParaGestao(sessionId))
+                .data("lanches", lancheBO.listarParaGestao(sessionId));
     }
 }

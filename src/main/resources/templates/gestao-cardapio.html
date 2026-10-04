@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • Gestão do cardápio</title>
+    <link rel="stylesheet" href="auditoria.css">
+    <link rel="stylesheet" href="usuarios.css">
+    <link rel="stylesheet" href="gestao.css">
+    <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="footer.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+    <div class="info-box">
+        <h2>🍔 Gestão do cardápio</h2>
+        <p class="subtitulo">Cadastre, edite e retire lanches do cardápio.</p>
+        <p id="mensagem" class="mensagem" hidden></p>
+
+        <form id="formGestao" class="form-gestao" data-url="/gestao-cardapio/lanches" novalidate>
+            <h3 id="formTitulo" data-titulo-novo="Novo lanche" data-titulo-edicao="Editar lanche">Novo lanche</h3>
+            <input type="hidden" name="id">
+            <div class="campos">
+                <label>Nome
+                    <input type="text" name="nome" maxlength="100" required>
+                </label>
+                <label>Preço (R$)
+                    <input type="number" name="preco" min="0.01" step="0.01" required>
+                </label>
+                <label>Categoria
+                    <select name="categoria" required>
+                        {#for categoria in categorias}
+                        <option value="{categoria.nome}">{categoria.titulo}</option>
+                        {/for}
+                    </select>
+                </label>
+                <label class="campo-largo">Descrição
+                    <textarea name="descricao" rows="2" maxlength="255"></textarea>
+                </label>
+            </div>
+            <div class="form-acoes">
+                <button type="submit" class="btn-acao btn-salvar">Salvar</button>
+                <button type="button" id="cancelarEdicao" class="btn-acao btn-cancelar" hidden>Cancelar edição</button>
+            </div>
+        </form>
+
+        <table class="audit-table">
+            <thead>
+            <tr>
+                <th>Lanche</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            {#for lanche in lanches}
+            <tr data-id="{lanche.id}" data-nome="{lanche.nome}" data-descricao="{lanche.descricao ?: ''}"
+                data-preco="{lanche.preco}" data-categoria="{lanche.categoria}">
+                <td>
+                    <strong>{lanche.nome}</strong>
+                    <div class="detalhe">{lanche.descricao ?: ''}</div>
+                </td>
+                <td>{lanche.categoriaTitulo}</td>
+                <td class="nowrap">{lanche.precoFormatado}</td>
+                <td class="acoes">
+                    <button type="button" class="btn-acao btn-salvar btn-editar">Editar</button>
+                    <button type="button" class="btn-acao btn-excluir btn-remover"
+                            data-confirmar="Retirar {lanche.nome} do cardápio?"
+                            data-sucesso="Lanche retirado do cardápio.">Retirar</button>
+                </td>
+            </tr>
+            {#else}
+            <tr>
+                <td colspan="4" class="vazio">Nenhum lanche no cardápio.</td>
+            </tr>
+            {/for}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{#include footer /}
+
+<script src="gestao.js"></script>
+</body>
+</html>
