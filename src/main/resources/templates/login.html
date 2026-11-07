@@ -14,7 +14,6 @@
   <div class="login-container">
     <!-- Cabeçalho com logo -->
     <div class="header">
-      <a href="/" class="back-link" aria-label="Voltar para o início"><span class="back-arrow"></span></a>
       <div class="logo">🍔</div>
       <h1>Paccelli Lanches</h1>
       <p>Peça agora e aproveite!</p>
@@ -24,8 +23,8 @@
     <div class="form-container">
       <form id="loginForm">
         <div class="input-group">
-          <label for="email">E-mail ou telefone</label>
-          <input type="text" id="email" placeholder="Digite seu e-mail ou telefone" required>
+          <label for="email">E-mail</label>
+          <input type="email" id="email" placeholder="seuemail@email.com" autocomplete="email" required>
         </div>
 
         <div class="input-group">
@@ -40,6 +39,8 @@
           </div>
           <a href="#" class="forgot">Esqueci a senha</a>
         </div>
+
+        <p id="mensagemForm" class="mensagem-form" role="alert" hidden></p>
 
         <button type="submit" class="btn-primary">Entrar</button>
       </form>

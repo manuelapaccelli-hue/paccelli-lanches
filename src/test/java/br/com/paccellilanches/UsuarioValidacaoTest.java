@@ -11,7 +11,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 
 /**
  * Validações do UsuarioBO, exercitadas pelo autocadastro (POST /cadastro, rota pública).
- * Todos os casos são inválidos, então nada é gravado no banco.
+ * Todos os casos são inválidos, então nada é gravado no banco. Os casos que não testam o CPF
+ * não informam CPF, para não depender de quais CPFs já estão cadastrados.
  */
 @QuarkusTest
 class UsuarioValidacaoTest {
@@ -31,9 +32,9 @@ class UsuarioValidacaoTest {
             "CPF dígito errado   | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 529.982.247-24 |            | CPF inválido.",
             "CPF repetido 1      | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 111.111.111-11 |            | CPF inválido.",
             "CPF curto           | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 123.456        |            | CPF inválido.",
-            "nascimento futuro   | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 529.982.247-25 | AMANHA     | não pode ser uma data futura.",
-            "nascimento antigo   | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 529.982.247-25 | 1800-01-01 | Informe uma data de nascimento válida.",
-            "senha curta         | Cliente Teste  | novo@teste.com        | (61) 99999-9999 | 529.982.247-25 | 2000-05-10 | A senha deve ter pelo menos 6 caracteres."
+            "nascimento futuro   | Cliente Teste  | novo@teste.com        | (61) 99999-9999 |                | AMANHA     | não pode ser uma data futura.",
+            "nascimento antigo   | Cliente Teste  | novo@teste.com        | (61) 99999-9999 |                | 1800-01-01 | Informe uma data de nascimento válida.",
+            "senha curta         | Cliente Teste  | novo@teste.com        | (61) 99999-9999 |                | 2000-05-10 | A senha deve ter pelo menos 6 caracteres."
     })
     void testCadastroInvalido(String caso, String nome, String email, String telefone, String cpf,
                               String dataNascimento, String mensagem) {

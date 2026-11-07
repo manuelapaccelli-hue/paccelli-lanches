@@ -1,6 +1,19 @@
+// Mostra uma mensagem dentro do formulário (no lugar do alert do navegador)
+function mostrarMensagemForm(texto, tipo) {
+    const mensagem = document.getElementById('mensagemForm');
+    mensagem.textContent = texto;
+    mensagem.className = 'mensagem-form ' + tipo;
+    mensagem.hidden = false;
+}
+
 // Lógica de Login (executa apenas se o formulário de login existir na página)
 const loginForm = document.getElementById('loginForm');
 if (loginForm) {
+    // Vindo do cadastro (/login?conta=criada), avisa que a conta foi criada
+    if (new URLSearchParams(window.location.search).get('conta') === 'criada') {
+        mostrarMensagemForm('✅ Conta criada! Entre com o seu e-mail e senha.', 'sucesso');
+    }
+
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -17,12 +30,12 @@ if (loginForm) {
                     window.location.href = "/";
                 } else {
                     return response.text().then(function(msg) {
-                        alert(msg || 'E-mail ou senha inválidos.');
+                        mostrarMensagemForm(msg || 'E-mail ou senha inválidos.', 'erro');
                     });
                 }
             })
             .catch(function() {
-                alert('Não foi possível conectar ao servidor. Tente novamente.');
+                mostrarMensagemForm('Não foi possível conectar ao servidor. Tente novamente.', 'erro');
             });
     });
 }
@@ -73,12 +86,12 @@ if (cadastroForm) {
         const confirmarSenha = document.getElementById('confirmar-senha').value;
 
         if (senha !== confirmarSenha) {
-            alert('As senhas não coincidem! Por favor, verifique.');
+            mostrarMensagemForm('As senhas não coincidem. Por favor, verifique.', 'erro');
             return;
         }
 
         if (senha.length < 6) {
-            alert('A senha deve ter pelo menos 6 caracteres.');
+            mostrarMensagemForm('A senha deve ter pelo menos 6 caracteres.', 'erro');
             return;
         }
 
@@ -95,16 +108,15 @@ if (cadastroForm) {
         })
             .then(function(response) {
                 if (response.ok) {
-                    alert('✅ Cadastro realizado com sucesso!\n\nBem-vindo ao Paccelli Lanches! 🍔');
-                    window.location.href = "login";
+                    window.location.href = '/login?conta=criada';
                 } else {
                     return response.text().then(function(msg) {
-                        alert(msg || 'Não foi possível concluir o cadastro.');
+                        mostrarMensagemForm(msg || 'Não foi possível concluir o cadastro.', 'erro');
                     });
                 }
             })
             .catch(function() {
-                alert('Não foi possível conectar ao servidor. Tente novamente.');
+                mostrarMensagemForm('Não foi possível conectar ao servidor. Tente novamente.', 'erro');
             });
     });
 }

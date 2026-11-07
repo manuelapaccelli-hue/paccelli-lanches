@@ -97,11 +97,31 @@
         });
     });
 
+    // Remoção em dois cliques (no lugar do confirm do navegador): o primeiro mostra a pergunta e
+    // troca o botão para "Confirmar"; o segundo, dentro de 5 segundos, executa a remoção.
+    const ESPERA_CONFIRMACAO = 5000;
+
+    function cancelarConfirmacao(botao) {
+        clearTimeout(botao.temporizador);
+        delete botao.dataset.aguardando;
+        botao.textContent = botao.dataset.textoOriginal;
+    }
+
     document.querySelectorAll('.btn-remover').forEach(function(botao) {
+        botao.dataset.textoOriginal = botao.textContent;
         botao.addEventListener('click', function() {
-            if (!confirm(botao.dataset.confirmar)) {
+            if (!botao.dataset.aguardando) {
+                document.querySelectorAll('.btn-remover[data-aguardando]').forEach(cancelarConfirmacao);
+                botao.dataset.aguardando = 'sim';
+                botao.textContent = 'Confirmar';
+                mostrarMensagem(botao.dataset.confirmar + ' Clique em "Confirmar" para continuar.', 'aviso');
+                botao.temporizador = setTimeout(function() {
+                    cancelarConfirmacao(botao);
+                    mensagem.hidden = true;
+                }, ESPERA_CONFIRMACAO);
                 return;
             }
+            cancelarConfirmacao(botao);
             botao.disabled = true;
             enviar(url + '/' + botao.closest('tr').dataset.id, 'DELETE')
                 .then(function() {

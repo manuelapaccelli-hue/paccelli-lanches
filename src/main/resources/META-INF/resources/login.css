@@ -186,3 +186,22 @@ body {
     font-weight: 600;
     text-decoration: none;
 }
+
+/* Mensagem de erro/sucesso dentro do formulário (no lugar do alert do navegador) */
+.mensagem-form {
+    margin: 0 0 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.mensagem-form.erro {
+    background: rgba(231, 76, 60, 0.25);
+    color: #ff9b8f;
+}
+
+.mensagem-form.sucesso {
+    background: rgba(46, 204, 113, 0.2);
+    color: #7dffb0;
+}

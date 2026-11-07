@@ -89,3 +89,8 @@
     background: #e74c3c;
     color: #fff;
 }
+
+.mensagem.aviso {
+    background: rgba(241, 196, 15, 0.2);
+    color: #ffe27a;
+}
