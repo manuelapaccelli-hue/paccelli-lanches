@@ -1,7 +1,8 @@
 package br.com.paccellilanches.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -12,7 +13,11 @@ import jakarta.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "item_carrinho", uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "lanche_id"}))
-public class ItemCarrinho extends PanacheEntity {
+public class ItemCarrinho {
+
+    @Id
+    @GeneratedValue
+    public Long id;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_id")

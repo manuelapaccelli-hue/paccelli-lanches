@@ -1,12 +1,17 @@
 package br.com.paccellilanches.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
 @Entity
-public class AuditLog extends PanacheEntity {
+public class AuditLog {
+
+    @Id
+    @GeneratedValue
+    public Long id;
 
     public String acao;
     public String usuario;

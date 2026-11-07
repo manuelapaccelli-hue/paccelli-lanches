@@ -1,13 +1,18 @@
 package br.com.paccellilanches.entity;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tipo_usuario")
-public class TipoUsuario extends PanacheEntity {
+public class TipoUsuario {
+
+    @Id
+    @GeneratedValue
+    public Long id;
 
     public static final String ADMIN = "ADMIN";
     public static final String COMUM = "COMUM";
