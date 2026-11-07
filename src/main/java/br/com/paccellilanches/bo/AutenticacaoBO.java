@@ -16,6 +16,9 @@ import java.util.Optional;
 public class AutenticacaoBO {
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     UsuarioDAO usuarioDAO;
 
     @Inject
@@ -26,12 +29,15 @@ public class AutenticacaoBO {
 
     /** Autentica o usuário e devolve o id da sessão criada. */
     public String login(LoginDTO request) {
+        auditoriaBO.identificarUsuario(request.email());
         boolean senhaCorreta = usuarioDAO.buscarAtivoPorEmail(request.email())
                 .map(usuario -> senhaBO.confere(request.senha(), usuario.senha))
                 .orElse(false);
         if (!senhaCorreta) {
+            auditoriaBO.detalhar("Login recusado");
             throw new NaoAutenticadoException("E-mail ou senha inválidos.");
         }
+        auditoriaBO.detalhar("Entrou no sistema");
         return sessaoBO.criar(request.email());
     }
 

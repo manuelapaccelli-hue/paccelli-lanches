@@ -29,6 +29,9 @@ import java.util.stream.Collectors;
 public class LancheBO {
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     LancheDAO lancheDAO;
 
     @Inject
@@ -100,6 +103,7 @@ public class LancheBO {
         autenticacaoBO.exigirAdmin(sessionId);
         CategoriaLanche categoria = validar(request, null);
         lancheDAO.salvar(new Lanche(request.nome().trim(), textoOuNulo(request.descricao()), request.preco(), categoria));
+        auditoriaBO.detalhar("Cadastrou o lanche " + request.nome().trim());
     }
 
     @Transactional
@@ -112,13 +116,16 @@ public class LancheBO {
         lanche.descricao = textoOuNulo(request.descricao());
         lanche.preco = request.preco();
         lanche.categoria = categoria;
+        auditoriaBO.detalhar("Editou o lanche " + lanche.nome);
     }
 
     /** Exclusão lógica: o lanche sai do cardápio, dos carrinhos e das promoções, mas continua no banco. */
     @Transactional
     public void remover(String sessionId, Long id) {
         autenticacaoBO.exigirAdmin(sessionId);
-        buscarAtivo(id).ativo = false;
+        Lanche lanche = buscarAtivo(id);
+        lanche.ativo = false;
+        auditoriaBO.detalhar("Retirou o lanche " + lanche.nome + " do cardápio");
     }
 
     /** Valida os dados do formulário e devolve a categoria escolhida; idAtual é null no cadastro. */

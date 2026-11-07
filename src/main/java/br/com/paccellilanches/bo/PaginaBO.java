@@ -116,7 +116,8 @@ public class PaginaBO {
     }
 
     public TemplateInstance auditoria(String sessionId) {
-        return auditoria.data("logs", auditoriaBO.listarTodos(sessionId));
+        return auditoria.data("logs", auditoriaBO.listarRecentes(sessionId))
+                .data("limite", AuditoriaBO.LIMITE_TELA);
     }
 
     public TemplateInstance gestaoCardapio(String sessionId) {

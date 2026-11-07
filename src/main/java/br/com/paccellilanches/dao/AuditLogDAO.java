@@ -14,7 +14,8 @@ public class AuditLogDAO implements PanacheRepository<AuditLog> {
         persist(log);
     }
 
-    public List<AuditLog> listarTodos() {
-        return listAll(Sort.descending("dataHora"));
+    /** As ações mais recentes, da última para a primeira. */
+    public List<AuditLog> listarRecentes(int quantidade) {
+        return findAll(Sort.descending("dataHora")).page(0, quantidade).list();
     }
 }

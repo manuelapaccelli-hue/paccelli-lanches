@@ -37,6 +37,9 @@ public class UsuarioBO {
     private static final Pattern FORMATO_EMAIL = Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$");
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     UsuarioDAO usuarioDAO;
 
     @Inject
@@ -62,6 +65,8 @@ public class UsuarioBO {
                 request.dataNascimento(), null);
         validarSenha(request.senha());
         usuarioDAO.salvar(novoUsuario(dados, request.senha(), buscarTipo(TipoUsuario.COMUM)));
+        auditoriaBO.identificarUsuario(dados.email());
+        auditoriaBO.detalhar("Criou a própria conta");
     }
 
     // ----- Perfil do próprio usuário (tela /perfil) -----
@@ -77,6 +82,7 @@ public class UsuarioBO {
         Usuario usuario = autenticacaoBO.exigirLogado(sessionId);
         aplicarDados(usuario, validarDados(request.nome(), request.email(), request.telefone(), request.cpf(),
                 request.dataNascimento(), usuario.id));
+        auditoriaBO.detalhar("Atualizou os próprios dados");
     }
 
     /** Troca de senha pelo próprio usuário: exige a senha atual. */
@@ -91,6 +97,7 @@ public class UsuarioBO {
             throw new NegocioException("A nova senha deve ser diferente da senha atual.");
         }
         usuario.senha = senhaBO.gerarHash(request.novaSenha());
+        auditoriaBO.detalhar("Trocou a própria senha");
     }
 
     // ----- Gerenciamento pelo administrador (tela /usuarios) -----
@@ -120,6 +127,7 @@ public class UsuarioBO {
         validarSenha(request.senha());
         TipoUsuario tipo = buscarTipoInformado(request.tipo());
         usuarioDAO.salvar(novoUsuario(dados, request.senha(), tipo));
+        auditoriaBO.detalhar("Cadastrou o usuário " + dados.email() + " (" + tipo.descricao + ")");
     }
 
     /**
@@ -142,6 +150,7 @@ public class UsuarioBO {
         }
         aplicarDados(usuario, dados);
         usuario.tipo = tipo;
+        auditoriaBO.detalhar("Editou o usuário " + usuario.email + " (" + tipo.descricao + ")");
     }
 
     /** Exclusão lógica: o usuário é desativado e volta a ser do tipo comum. */
@@ -154,6 +163,7 @@ public class UsuarioBO {
         }
         usuario.ativo = false;
         usuario.tipo = buscarTipo(TipoUsuario.COMUM);
+        auditoriaBO.detalhar("Excluiu o usuário " + usuario.email);
     }
 
     // ----- Regras compartilhadas -----

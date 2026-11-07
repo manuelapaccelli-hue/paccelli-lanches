@@ -15,7 +15,8 @@
 <div class="container">
     <div class="info-box">
         <h2>🛡️ Log de Auditoria</h2>
-        <p class="subtitulo">Registro de todas as ações executadas no sistema.</p>
+        <p class="subtitulo">Registro de todas as ações executadas no sistema: quem fez, o quê, quando e com qual resultado.
+            Mostrando as {limite} mais recentes.</p>
 
         <table class="audit-table">
             <thead>
@@ -23,18 +24,26 @@
                 <th>Data/Hora</th>
                 <th>Usuário</th>
                 <th>Ação</th>
+                <th>Resultado</th>
             </tr>
             </thead>
             <tbody>
             {#for log in logs}
             <tr>
-                <td>{log.dataHora}</td>
+                <td class="nowrap">{log.dataHora}</td>
                 <td>{log.usuario}</td>
-                <td>{log.acao}</td>
+                <td>
+                    {log.acao}
+                    {#if log.requisicao}<div class="requisicao">{log.requisicao}</div>{/if}
+                </td>
+                <td>
+                    <span class="resultado resultado-{log.resultadoCss}">{log.resultado}</span>
+                    {#if log.detalhe}<div class="requisicao">{log.detalhe}</div>{/if}
+                </td>
             </tr>
             {#else}
             <tr>
-                <td colspan="3" class="vazio">Nenhuma ação registrada até o momento.</td>
+                <td colspan="4" class="vazio">Nenhuma ação registrada até o momento.</td>
             </tr>
             {/for}
             </tbody>

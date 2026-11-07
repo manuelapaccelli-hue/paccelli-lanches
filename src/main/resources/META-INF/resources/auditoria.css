@@ -85,3 +85,40 @@ body {
         padding: 10px;
     }
 }
+
+/* Detalhes da linha de auditoria: requisição técnica e mensagem de erro */
+.requisicao {
+    color: #999;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    font-family: monospace;
+}
+
+.audit-table .nowrap {
+    white-space: nowrap;
+}
+
+.resultado {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.15);
+}
+
+.resultado-sucesso {
+    background: rgba(46, 204, 113, 0.25);
+    color: #7dffb0;
+}
+
+.resultado-aviso {
+    background: rgba(241, 196, 15, 0.25);
+    color: #ffe27a;
+}
+
+.resultado-erro {
+    background: rgba(231, 76, 60, 0.25);
+    color: #ff9b8f;
+}

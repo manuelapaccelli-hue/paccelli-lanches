@@ -28,6 +28,9 @@ public class CarrinhoBO {
     private static final int QUANTIDADE_MAXIMA = 99;
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     ItemCarrinhoDAO itemCarrinhoDAO;
 
     @Inject
@@ -65,18 +68,23 @@ public class CarrinhoBO {
         itemCarrinhoDAO.buscar(usuario, lanche.id).ifPresentOrElse(
                 item -> item.quantidade = validarQuantidade(item.quantidade + 1),
                 () -> itemCarrinhoDAO.salvar(new ItemCarrinho(usuario, lanche, 1)));
+        auditoriaBO.detalhar("Adicionou " + lanche.nome + " ao carrinho");
     }
 
     @Transactional
     public void alterarQuantidade(String sessionId, Long lancheId, QuantidadeDTO request) {
         Usuario usuario = autenticacaoBO.exigirLogado(sessionId);
-        buscarItem(usuario, lancheId).quantidade = validarQuantidade(request.quantidade());
+        ItemCarrinho item = buscarItem(usuario, lancheId);
+        item.quantidade = validarQuantidade(request.quantidade());
+        auditoriaBO.detalhar("Alterou a quantidade de " + item.lanche.nome + " no carrinho para " + item.quantidade);
     }
 
     @Transactional
     public void remover(String sessionId, Long lancheId) {
         Usuario usuario = autenticacaoBO.exigirLogado(sessionId);
-        itemCarrinhoDAO.remover(buscarItem(usuario, lancheId));
+        ItemCarrinho item = buscarItem(usuario, lancheId);
+        itemCarrinhoDAO.remover(item);
+        auditoriaBO.detalhar("Removeu " + item.lanche.nome + " do carrinho");
     }
 
     private int validarQuantidade(int quantidade) {

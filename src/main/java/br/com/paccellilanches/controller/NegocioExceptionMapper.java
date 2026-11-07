@@ -1,6 +1,7 @@
 package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.AcessoNegadoException;
+import br.com.paccellilanches.bo.AuditoriaBO;
 import br.com.paccellilanches.bo.NaoAutenticadoException;
 import br.com.paccellilanches.bo.NegocioException;
 import br.com.paccellilanches.bo.RecursoNaoEncontradoException;
@@ -30,8 +31,12 @@ public class NegocioExceptionMapper {
     @Location("acesso-negado.html")
     Template acessoNegado;
 
+    @Inject
+    AuditoriaBO auditoriaBO;
+
     @ServerExceptionMapper
     public Response mapear(NegocioException exception, ContainerRequestContext requestContext) {
+        auditoriaBO.registrarErro(exception.getMessage());
         if (ehNavegacaoDePagina(requestContext)) {
             if (exception instanceof NaoAutenticadoException) {
                 return Response.seeOther(URI.create("/login")).build();

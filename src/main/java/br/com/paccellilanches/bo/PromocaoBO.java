@@ -33,6 +33,9 @@ public class PromocaoBO {
     private static final int TAMANHO_MAXIMO_SELO = 15;
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     PromocaoDAO promocaoDAO;
 
     @Inject
@@ -85,6 +88,7 @@ public class PromocaoBO {
         Lanche lanche = validar(request);
         promocaoDAO.salvar(new Promocao(lanche, request.precoPromocional(), seloOuNulo(request.selo()),
                 request.dataInicio(), request.dataFim()));
+        auditoriaBO.detalhar("Cadastrou a promoção de " + lanche.nome + " por " + Moeda.formatar(request.precoPromocional()));
     }
 
     @Transactional
@@ -98,13 +102,16 @@ public class PromocaoBO {
         promocao.selo = seloOuNulo(request.selo());
         promocao.dataInicio = request.dataInicio();
         promocao.dataFim = request.dataFim();
+        auditoriaBO.detalhar("Editou a promoção de " + lanche.nome);
     }
 
     /** Exclusão lógica: a promoção deixa de valer e sai da lista, mas continua no banco. */
     @Transactional
     public void encerrar(String sessionId, Long id) {
         autenticacaoBO.exigirAdmin(sessionId);
-        buscarAtiva(id).ativo = false;
+        Promocao promocao = buscarAtiva(id);
+        promocao.ativo = false;
+        auditoriaBO.detalhar("Encerrou a promoção de " + promocao.lanche.nome);
     }
 
     /** Valida os dados do formulário e devolve o lanche da promoção. */

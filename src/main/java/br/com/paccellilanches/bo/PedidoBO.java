@@ -36,6 +36,9 @@ public class PedidoBO {
     private static final DateTimeFormatter DATA_HORA = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @Inject
+    AuditoriaBO auditoriaBO;
+
+    @Inject
     PedidoDAO pedidoDAO;
 
     @Inject
@@ -75,6 +78,7 @@ public class PedidoBO {
         pedidoDAO.salvar(pedido);
         pedido.itens.forEach(itemPedidoDAO::salvar);
         itemCarrinhoDAO.esvaziar(usuario);
+        auditoriaBO.detalhar("Finalizou o pedido #" + pedido.id + " (" + Moeda.formatar(pedido.total) + ")");
         return paraDTO(pedido);
     }
 
@@ -122,6 +126,8 @@ public class PedidoBO {
             throw new NegocioException("O pedido não pode voltar de \"" + pedido.status.titulo
                     + "\" para \"" + novo.titulo + "\".");
         }
+        auditoriaBO.detalhar("Alterou o pedido #" + pedido.id + " de \"" + pedido.status.titulo
+                + "\" para \"" + novo.titulo + "\"");
         pedido.status = novo;
     }
 
