@@ -32,6 +32,13 @@ public class UsuarioDAO implements PanacheRepository<Usuario> {
         return count("email = ?1 and id <> ?2", email, id) > 0;
     }
 
+    /** Se algum usuário (exceto o do id informado, quando não for null) já usa o CPF. */
+    public boolean existeOutroComCpf(String cpf, Long id) {
+        return id == null
+                ? count("cpf", cpf) > 0
+                : count("cpf = ?1 and id <> ?2", cpf, id) > 0;
+    }
+
     public List<Usuario> listarAtivos() {
         return list("ativo", Sort.ascending("nome"), true);
     }
