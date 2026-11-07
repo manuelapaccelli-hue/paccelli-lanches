@@ -1,6 +1,6 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -12,11 +12,11 @@ import jakarta.ws.rs.core.MediaType;
 public class ContatoController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template contato;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return paginaBO.contato();
+        return contato.instance();
     }
 }

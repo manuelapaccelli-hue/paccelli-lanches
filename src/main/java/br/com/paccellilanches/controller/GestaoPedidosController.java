@@ -1,8 +1,9 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.PedidoBO;
 import br.com.paccellilanches.dto.AlterarStatusPedidoDTO;
+import io.quarkus.qute.Location;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -22,7 +23,8 @@ import jakarta.ws.rs.core.Response;
 public class GestaoPedidosController {
 
     @Inject
-    PaginaBO paginaBO;
+    @Location("gestao-pedidos.html")
+    Template gestaoPedidos;
 
     @Inject
     PedidoBO pedidoBO;
@@ -30,7 +32,8 @@ public class GestaoPedidosController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId) {
-        return paginaBO.gestaoPedidos(sessionId);
+        return gestaoPedidos.data("pedidos", pedidoBO.listarParaGestao(sessionId))
+                .data("status", pedidoBO.statusDisponiveis());
     }
 
     @PUT

@@ -1,8 +1,9 @@
 package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.LancheBO;
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.dto.LancheFormDTO;
+import io.quarkus.qute.Location;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -24,7 +25,8 @@ import jakarta.ws.rs.core.Response;
 public class GestaoCardapioController {
 
     @Inject
-    PaginaBO paginaBO;
+    @Location("gestao-cardapio.html")
+    Template gestaoCardapio;
 
     @Inject
     LancheBO lancheBO;
@@ -32,7 +34,8 @@ public class GestaoCardapioController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId) {
-        return paginaBO.gestaoCardapio(sessionId);
+        return gestaoCardapio.data("lanches", lancheBO.listarParaGestao(sessionId))
+                .data("categorias", lancheBO.categorias());
     }
 
     @POST

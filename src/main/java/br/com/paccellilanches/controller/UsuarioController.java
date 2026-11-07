@@ -1,8 +1,9 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
+import br.com.paccellilanches.bo.AutenticacaoBO;
 import br.com.paccellilanches.bo.UsuarioBO;
 import br.com.paccellilanches.dto.UsuarioFormDTO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -24,7 +25,10 @@ import jakarta.ws.rs.core.Response;
 public class UsuarioController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template usuarios;
+
+    @Inject
+    AutenticacaoBO autenticacaoBO;
 
     @Inject
     UsuarioBO usuarioBO;
@@ -32,7 +36,9 @@ public class UsuarioController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId) {
-        return paginaBO.usuarios(sessionId);
+        return usuarios.data("usuarios", usuarioBO.listarAtivos(sessionId))
+                .data("tipos", usuarioBO.listarTipos())
+                .data("emailLogado", autenticacaoBO.status(sessionId).email());
     }
 
     @POST

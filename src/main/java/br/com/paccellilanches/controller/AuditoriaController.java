@@ -1,6 +1,7 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
+import br.com.paccellilanches.bo.AuditoriaBO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.CookieParam;
@@ -13,11 +14,15 @@ import jakarta.ws.rs.core.MediaType;
 public class AuditoriaController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template auditoria;
+
+    @Inject
+    AuditoriaBO auditoriaBO;
 
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId) {
-        return paginaBO.auditoria(sessionId);
+        return auditoria.data("logs", auditoriaBO.listarRecentes(sessionId))
+                .data("limite", AuditoriaBO.LIMITE_TELA);
     }
 }

@@ -1,8 +1,8 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.PedidoBO;
 import br.com.paccellilanches.dto.PedidoDTO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.CookieParam;
@@ -21,7 +21,7 @@ import jakarta.ws.rs.core.Response;
 public class PedidoController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template pedidos;
 
     @Inject
     PedidoBO pedidoBO;
@@ -30,7 +30,8 @@ public class PedidoController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId, @QueryParam("novo") Long novo) {
-        return paginaBO.meusPedidos(sessionId, novo);
+        return pedidos.data("pedidos", pedidoBO.meusPedidos(sessionId))
+                .data("pedidoNovo", novo);
     }
 
     @POST

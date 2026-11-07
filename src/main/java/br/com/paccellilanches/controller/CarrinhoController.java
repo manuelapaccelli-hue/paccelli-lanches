@@ -1,10 +1,10 @@
 package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.CarrinhoBO;
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.dto.AdicionarItemDTO;
 import br.com.paccellilanches.dto.CarrinhoDTO;
 import br.com.paccellilanches.dto.QuantidadeDTO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response;
 public class CarrinhoController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template carrinho;
 
     @Inject
     CarrinhoBO carrinhoBO;
@@ -31,7 +31,7 @@ public class CarrinhoController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return paginaBO.carrinho();
+        return carrinho.instance();
     }
 
     @GET

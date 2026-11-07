@@ -1,9 +1,9 @@
 package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.AutenticacaoBO;
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.dto.LoginDTO;
 import br.com.paccellilanches.dto.SessaoStatusDTO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -20,7 +20,7 @@ import jakarta.ws.rs.core.Response;
 public class LoginController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template login;
 
     @Inject
     AutenticacaoBO autenticacaoBO;
@@ -28,7 +28,7 @@ public class LoginController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get() {
-        return paginaBO.login();
+        return login.instance();
     }
 
     @POST

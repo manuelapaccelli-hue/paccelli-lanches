@@ -1,9 +1,9 @@
 package br.com.paccellilanches.controller;
 
-import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.UsuarioBO;
 import br.com.paccellilanches.dto.AlterarSenhaDTO;
 import br.com.paccellilanches.dto.PerfilFormDTO;
+import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.Response;
 public class PerfilController {
 
     @Inject
-    PaginaBO paginaBO;
+    Template perfil;
 
     @Inject
     UsuarioBO usuarioBO;
@@ -30,7 +30,7 @@ public class PerfilController {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance get(@CookieParam(CookieSessao.NOME) String sessionId) {
-        return paginaBO.perfil(sessionId);
+        return perfil.data("perfil", usuarioBO.perfil(sessionId));
     }
 
     @PUT
