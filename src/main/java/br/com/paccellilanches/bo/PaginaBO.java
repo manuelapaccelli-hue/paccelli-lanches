@@ -29,6 +29,9 @@ public class PaginaBO {
     PromocaoBO promocaoBO;
 
     @Inject
+    PedidoBO pedidoBO;
+
+    @Inject
     Template index;
 
     @Inject
@@ -65,6 +68,13 @@ public class PaginaBO {
     @Inject
     @Location("gestao-promocoes.html")
     Template gestaoPromocoes;
+
+    @Inject
+    Template pedidos;
+
+    @Inject
+    @Location("gestao-pedidos.html")
+    Template gestaoPedidos;
 
     public TemplateInstance index() {
         return index.instance();
@@ -117,5 +127,15 @@ public class PaginaBO {
     public TemplateInstance gestaoPromocoes(String sessionId) {
         return gestaoPromocoes.data("promocoes", promocaoBO.listarParaGestao(sessionId))
                 .data("lanches", lancheBO.listarParaGestao(sessionId));
+    }
+
+    public TemplateInstance meusPedidos(String sessionId, Long pedidoNovo) {
+        return pedidos.data("pedidos", pedidoBO.meusPedidos(sessionId))
+                .data("pedidoNovo", pedidoNovo);
+    }
+
+    public TemplateInstance gestaoPedidos(String sessionId) {
+        return gestaoPedidos.data("pedidos", pedidoBO.listarParaGestao(sessionId))
+                .data("status", pedidoBO.statusDisponiveis());
     }
 }

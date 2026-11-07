@@ -20,6 +20,11 @@ public class ItemCarrinhoDAO implements PanacheRepository<ItemCarrinho> {
         delete(item);
     }
 
+    /** Apaga todos os itens do carrinho do usuário (depois de finalizar o pedido). */
+    public void esvaziar(Usuario usuario) {
+        delete("usuario", usuario);
+    }
+
     /** Itens do carrinho do usuário; lanches retirados do cardápio não aparecem. */
     public List<ItemCarrinho> listarDoUsuario(Usuario usuario) {
         return list("usuario = ?1 and lanche.ativo = true", Sort.ascending("id"), usuario);

@@ -43,7 +43,7 @@ class PageResourceTest {
 
     @ParameterizedTest
     @ValueSource(strings = {"/", "/cardapio", "/promocoes", "/contato", "/carrinho", "/perfil",
-            "/usuarios", "/auditoria", "/gestao-cardapio", "/gestao-promocoes"})
+            "/pedidos", "/usuarios", "/auditoria", "/gestao-cardapio", "/gestao-promocoes", "/gestao-pedidos"})
     void testPagesRedirectToLoginWithoutSession(String pagina) {
         given()
           .accept("text/html")

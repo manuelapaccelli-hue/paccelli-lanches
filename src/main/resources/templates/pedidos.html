@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paccelli Lanches • Meus pedidos</title>
+  <link rel="stylesheet" href="cardapio.css">
+  <link rel="stylesheet" href="navbar.css">
+  <link rel="stylesheet" href="footer.css">
+  <link rel="stylesheet" href="pedidos.css">
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+
+  <div class="cardapio-section">
+    <h2>📦 MEUS PEDIDOS</h2>
+
+    {#if pedidoNovo}
+    <p class="pedido-sucesso" role="status">✅ Pedido #{pedidoNovo} recebido! Acompanhe o status por aqui.</p>
+    {/if}
+
+    {#for pedido in pedidos}
+    <div class="pedido{#if pedido.id == pedidoNovo} pedido-novo{/if}">
+      <div class="pedido-cabecalho">
+        <div>
+          <div class="pedido-numero">Pedido #{pedido.id}</div>
+          <div class="pedido-data">{pedido.dataHora}</div>
+        </div>
+        <span class="status status-{pedido.statusCss}">{pedido.status}</span>
+      </div>
+      <ul class="pedido-itens">
+        {#for item in pedido.itens}
+        <li>
+          <span>{item.quantidade}× {item.nome} <small>({item.precoUnitario} cada)</small></span>
+          <span>{item.subtotal}</span>
+        </li>
+        {/for}
+      </ul>
+      <div class="pedido-total">Total: <span>{pedido.total}</span></div>
+    </div>
+    {#else}
+    <div class="pedidos-vazio">
+      <p>Você ainda não fez nenhum pedido.</p>
+      <a href="/cardapio">Ver o cardápio</a>
+    </div>
+    {/for}
+  </div>
+
+</div>
+
+{#include footer /}
+
+</body>
+</html>

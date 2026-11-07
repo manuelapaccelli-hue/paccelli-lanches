@@ -65,11 +65,13 @@
     const vazioLink = document.getElementById('carrinhoVazioLink');
     const total = document.getElementById('carrinhoTotal');
     const modelo = document.getElementById('itemCarrinhoModelo');
+    const finalizar = document.getElementById('finalizarPedido');
 
     function renderizar(carrinho) {
         lista.innerHTML = '';
         vazio.hidden = carrinho.itens.length > 0;
         total.textContent = carrinho.total;
+        finalizar.disabled = carrinho.itens.length === 0;
 
         carrinho.itens.forEach(function(item) {
             const linha = modelo.content.firstElementChild.cloneNode(true);
@@ -115,6 +117,19 @@
         lista.querySelectorAll('button').forEach(function(botao) { botao.disabled = true; });
         requisicao.catch(mostrarErro).finally(carregar);
     }
+
+    // Finalizar pedido: o carrinho vira um pedido e o cliente vai para "Meus pedidos"
+    finalizar.addEventListener('click', function() {
+        finalizar.disabled = true;
+        enviar('/pedidos', 'POST')
+            .then(function(pedido) {
+                window.location.href = '/pedidos?novo=' + pedido.id;
+            })
+            .catch(function(erro) {
+                mostrarErro(erro);
+                carregar();
+            });
+    });
 
     carregar();
 })();

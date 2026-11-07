@@ -1,0 +1,141 @@
+/* Tela "Meus pedidos" e etiquetas de status dos pedidos (também usadas na gestão de pedidos) */
+.pedidos-vazio {
+    text-align: center;
+    padding: 50px 20px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    color: #ddd;
+}
+
+.pedidos-vazio a {
+    display: inline-block;
+    margin-top: 15px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.pedido-sucesso {
+    background: rgba(46, 204, 113, 0.2);
+    border: 1px solid rgba(46, 204, 113, 0.5);
+    color: #b9ffd5;
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+
+.pedido {
+    background: rgba(255,255,255,0.08);
+    border-radius: 15px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+}
+
+.pedido.pedido-novo {
+    outline: 2px solid var(--accent);
+}
+
+.pedido-cabecalho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.pedido-numero {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.pedido-data {
+    color: #bbb;
+    font-size: 0.9rem;
+}
+
+.pedido-itens {
+    list-style: none;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    padding: 10px 0;
+}
+
+.pedido-itens li {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 4px 0;
+    color: #ddd;
+}
+
+.pedido-total {
+    text-align: right;
+    margin-top: 12px;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.pedido-total span {
+    color: var(--accent);
+}
+
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    white-space: nowrap;
+    background: rgba(255,255,255,0.15);
+}
+
+.status-recebido {
+    background: rgba(52, 152, 219, 0.25);
+    color: #9fd3ff;
+}
+
+.status-em-preparo {
+    background: rgba(241, 196, 15, 0.25);
+    color: #ffe27a;
+}
+
+.status-saiu-para-entrega {
+    background: rgba(155, 89, 182, 0.3);
+    color: #e2b8ff;
+}
+
+.status-entregue {
+    background: rgba(46, 204, 113, 0.25);
+    color: #7dffb0;
+}
+
+.status-cancelado {
+    background: rgba(231, 76, 60, 0.25);
+    color: #ff9b8f;
+}
+
+/* Gestão de pedidos */
+.itens-resumo {
+    list-style: none;
+    font-size: 0.85rem;
+    color: #ddd;
+}
+
+.form-status {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.form-status select {
+    padding: 6px 10px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    background: rgba(0,0,0,0.3);
+    color: #fff;
+    font-family: inherit;
+}
+
+.form-status select option {
+    background: #222;
+}
