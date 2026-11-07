@@ -135,20 +135,6 @@ body {
     box-shadow: 0 0 0 3px rgba(228, 0, 43, 0.25);
 }
 
-.options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-    font-size: 14px;
-}
-
-.checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
 .btn-primary {
     display: block;
     width: 100%;
@@ -167,12 +153,6 @@ body {
 
 .btn-primary:hover {
     transform: scale(1.04);
-}
-
-.forgot {
-    color: #ffcc00;
-    text-decoration: none;
-    font-size: 14px;
 }
 
 .register {
