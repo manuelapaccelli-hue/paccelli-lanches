@@ -17,7 +17,8 @@ import jakarta.ws.rs.ext.Provider;
  * (ver SessaoBO); sem sessão válida, é registrado como "Anônimo".
  */
 @Provider
-@Priority(Priorities.USER)
+// Roda antes do AutenticacaoFilter, para registrar também os acessos barrados por falta de login
+@Priority(Priorities.AUTHENTICATION - 1)
 public class AuditFilter implements ContainerRequestFilter {
 
     @Inject

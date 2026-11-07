@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paccelli Lanches • Acesso negado</title>
+    <link rel="stylesheet" href="/perfil.css">
+    <link rel="stylesheet" href="/navbar.css">
+    <link rel="stylesheet" href="/footer.css">
+    <style>
+        .acesso-negado { text-align: center; }
+        .acesso-negado .subtitulo { margin: 15px 0 25px; }
+        .acesso-negado .btn-voltar {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: #e63946;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .acesso-negado .btn-voltar:hover { background: #c1121f; }
+    </style>
+</head>
+<body>
+
+{#include navbar /}
+
+<div class="container">
+    <div class="info-box acesso-negado">
+        <h2>🔒 Acesso negado</h2>
+        <p class="subtitulo">{mensagem}</p>
+        <a href="/" class="btn-voltar">Voltar ao início</a>
+    </div>
+</div>
+
+{#include footer /}
+
+</body>
+</html>

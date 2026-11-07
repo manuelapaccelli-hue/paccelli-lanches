@@ -2,25 +2,20 @@ package br.com.paccellilanches;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.endsWith;
 
 @QuarkusTest
 class PageResourceTest {
 
     @Test
-    void testIndexPage() {
+    void testLoginPageIsPublic() {
         given()
-          .when().get("/")
-          .then()
-             .statusCode(200)
-             .body(containsString("Paccelli Lanches"));
-    }
-
-    @Test
-    void testLoginPage() {
-        given()
+          .accept("text/html")
           .when().get("/login")
           .then()
              .statusCode(200)
@@ -28,38 +23,43 @@ class PageResourceTest {
     }
 
     @Test
-    void testCardapioPage() {
+    void testCadastroPageIsPublic() {
         given()
-          .when().get("/cardapio")
-          .then()
-             .statusCode(200)
-             .body(containsString("Cardápio"));
-    }
-
-    @Test
-    void testPromocoesPage() {
-        given()
-          .when().get("/promocoes")
-          .then()
-             .statusCode(200)
-             .body(containsString("Promoções"));
-    }
-
-    @Test
-    void testContatoPage() {
-        given()
-          .when().get("/contato")
-          .then()
-             .statusCode(200)
-             .body(containsString("Contato"));
-    }
-
-    @Test
-    void testCadastroPage() {
-        given()
+          .accept("text/html")
           .when().get("/cadastro")
           .then()
              .statusCode(200)
              .body(containsString("Cadastro"));
+    }
+
+    @Test
+    void testSessionStatusIsPublic() {
+        given()
+          .when().get("/login/status")
+          .then()
+             .statusCode(200)
+             .body(containsString("\"logado\":false"));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/", "/cardapio", "/promocoes", "/contato", "/carrinho", "/perfil",
+            "/usuarios", "/auditoria", "/gestao-cardapio", "/gestao-promocoes"})
+    void testPagesRedirectToLoginWithoutSession(String pagina) {
+        given()
+          .accept("text/html")
+          .redirects().follow(false)
+          .when().get(pagina)
+          .then()
+             .statusCode(303)
+             .header("Location", endsWith("/login"));
+    }
+
+    @Test
+    void testApiReturns401WithoutSession() {
+        given()
+          .accept("application/json")
+          .when().get("/carrinho/itens")
+          .then()
+             .statusCode(401);
     }
 }
