@@ -1,1 +1,4 @@
 target/
+
+# Configurações locais da IDE (IntelliJ)
+.idea/
