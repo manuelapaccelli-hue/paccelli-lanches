@@ -100,8 +100,8 @@ public class PaginaBO {
         return cadastro.instance();
     }
 
-    public TemplateInstance perfil() {
-        return perfil.instance();
+    public TemplateInstance perfil(String sessionId) {
+        return perfil.data("perfil", usuarioBO.perfil(sessionId));
     }
 
     public TemplateInstance carrinho() {

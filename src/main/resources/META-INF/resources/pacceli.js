@@ -27,41 +27,6 @@ if (loginForm) {
     });
 }
 
-// Lógica da tela de Perfil (executa apenas se o box de perfil existir na página)
-const perfilBox = document.getElementById('perfilBox');
-if (perfilBox) {
-    fetch('/perfil/dados')
-        .then(function(response) {
-            if (response.status === 401) {
-                window.location.href = "/login";
-                return null;
-            }
-            return response.json();
-        })
-        .then(function(perfil) {
-            if (!perfil) return;
-
-            document.getElementById('perfilNome').textContent = perfil.nome || '—';
-            document.getElementById('perfilEmail').textContent = perfil.email || '—';
-            document.getElementById('perfilTelefone').textContent = perfil.telefone || '—';
-            document.getElementById('perfilCpf').textContent = perfil.cpf || '—';
-            document.getElementById('perfilDataNascimento').textContent = perfil.dataNascimento || '—';
-        })
-        .catch(function() {
-            alert('Não foi possível carregar seu perfil. Tente novamente.');
-        });
-
-    const logoutBtn = document.getElementById('logoutBtn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            fetch('/login/sessao', { method: 'DELETE' })
-                .finally(function() {
-                    window.location.href = "/login";
-                });
-        });
-    }
-}
-
 // Lógica de Cadastro (executa apenas se o formulário de cadastro existir na página)
 const cadastroForm = document.getElementById('cadastroForm');
 if (cadastroForm) {

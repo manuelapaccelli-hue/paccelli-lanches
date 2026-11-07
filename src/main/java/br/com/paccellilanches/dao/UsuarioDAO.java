@@ -27,6 +27,11 @@ public class UsuarioDAO implements PanacheRepository<Usuario> {
         return count("email", email) > 0;
     }
 
+    /** Se outro usuário (diferente do id informado) já usa o e-mail. */
+    public boolean existeOutroComEmail(String email, Long id) {
+        return count("email = ?1 and id <> ?2", email, id) > 0;
+    }
+
     public List<Usuario> listarAtivos() {
         return list("ativo", Sort.ascending("nome"), true);
     }

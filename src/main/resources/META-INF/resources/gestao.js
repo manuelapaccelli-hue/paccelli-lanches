@@ -1,4 +1,4 @@
-// Telas de gestão (cardápio e promoções): formulário de cadastro/edição e remoção pela tabela.
+// Telas de gestão (usuários, cardápio e promoções): formulário de cadastro/edição e remoção pela tabela.
 // O formulário #formGestao envia os campos pelo "name"; cada linha da tabela guarda os valores
 // atuais em atributos data-* com os mesmos nomes, usados para preencher o formulário ao editar.
 (function() {

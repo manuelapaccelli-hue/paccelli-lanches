@@ -6,6 +6,7 @@
     <title>Paccelli Lanches • Usuários</title>
     <link rel="stylesheet" href="auditoria.css">
     <link rel="stylesheet" href="usuarios.css">
+    <link rel="stylesheet" href="gestao.css">
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="footer.css">
 </head>
@@ -16,8 +17,45 @@
 <div class="container">
     <div class="info-box">
         <h2>👥 Usuários</h2>
-        <p class="subtitulo">Gerencie os usuários do sistema: telefone, tipo de usuário e exclusão.</p>
+        <p class="subtitulo">Cadastre, edite e exclua os usuários do sistema e defina o tipo de cada um.</p>
         <p id="mensagem" class="mensagem" hidden></p>
+
+        <form id="formGestao" class="form-gestao" data-url="/usuarios" novalidate>
+            <h3 id="formTitulo" data-titulo-novo="Novo usuário" data-titulo-edicao="Editar usuário">Novo usuário</h3>
+            <input type="hidden" name="id">
+            <div class="campos">
+                <label>Nome
+                    <input type="text" name="nome" required>
+                </label>
+                <label>E-mail
+                    <input type="email" name="email" required>
+                </label>
+                <label>Telefone
+                    <input type="tel" name="telefone" placeholder="(XX) XXXXX-XXXX">
+                </label>
+                <label>CPF
+                    <input type="text" name="cpf" placeholder="000.000.000-00">
+                </label>
+                <label>Data de nascimento
+                    <input type="date" name="dataNascimento">
+                </label>
+                <label>Tipo
+                    <select name="tipo" required>
+                        {#for tipo in tipos}
+                        <option value="{tipo.nome}"{#if tipo.nome == 'COMUM'} selected{/if}>{tipo.descricao}</option>
+                        {/for}
+                    </select>
+                </label>
+                <label>Senha
+                    <input type="password" name="senha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres">
+                </label>
+            </div>
+            <p class="dica">Na edição, deixe a senha em branco para manter a senha atual do usuário.</p>
+            <div class="form-acoes">
+                <button type="submit" class="btn-acao btn-salvar">Salvar</button>
+                <button type="button" id="cancelarEdicao" class="btn-acao btn-cancelar" hidden>Cancelar edição</button>
+            </div>
+        </form>
 
         <table class="audit-table">
             <thead>
@@ -31,26 +69,19 @@
             </thead>
             <tbody>
             {#for usuario in usuarios}
-            <tr data-id="{usuario.id}">
+            <tr data-id="{usuario.id}" data-nome="{usuario.nome}" data-email="{usuario.email}"
+                data-telefone="{usuario.telefone ?: ''}" data-cpf="{usuario.cpf ?: ''}"
+                data-data-nascimento="{usuario.dataNascimento ?: ''}" data-tipo="{usuario.tipo}">
                 <td>{usuario.nome}</td>
                 <td>{usuario.email}{#if usuario.email == emailLogado} <span class="voce">(você)</span>{/if}</td>
-                <td>
-                    <div class="telefone-edit">
-                        <input type="tel" class="input-telefone" value="{usuario.telefone ?: ''}" placeholder="(XX) XXXXX-XXXX">
-                        <button type="button" class="btn-acao btn-salvar">Salvar</button>
-                    </div>
-                </td>
-                <td>
-                    <select class="select-tipo" data-atual="{usuario.tipo}"
-                            {#if usuario.email == emailLogado}disabled title="Você não pode alterar o seu próprio tipo"{/if}>
-                        {#for tipo in tipos}
-                        <option value="{tipo.nome}" {#if tipo.nome == usuario.tipo}selected{/if}>{tipo.descricao}</option>
-                        {/for}
-                    </select>
-                </td>
-                <td>
+                <td class="nowrap">{usuario.telefone ?: '—'}</td>
+                <td>{usuario.tipoDescricao}</td>
+                <td class="acoes">
+                    <button type="button" class="btn-acao btn-salvar btn-editar">Editar</button>
                     {#if usuario.email != emailLogado}
-                    <button type="button" class="btn-acao btn-excluir">Excluir</button>
+                    <button type="button" class="btn-acao btn-excluir btn-remover"
+                            data-confirmar="Excluir o usuário {usuario.nome}?"
+                            data-sucesso="Usuário excluído.">Excluir</button>
                     {/if}
                 </td>
             </tr>
@@ -66,6 +97,6 @@
 
 {#include footer /}
 
-<script src="usuario.js"></script>
+<script src="gestao.js"></script>
 </body>
 </html>

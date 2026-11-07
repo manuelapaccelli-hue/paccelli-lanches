@@ -2,14 +2,14 @@ package br.com.paccellilanches.controller;
 
 import br.com.paccellilanches.bo.PaginaBO;
 import br.com.paccellilanches.bo.UsuarioBO;
-import br.com.paccellilanches.dto.AlterarTipoDTO;
-import br.com.paccellilanches.dto.TelefoneDTO;
+import br.com.paccellilanches.dto.UsuarioFormDTO;
 import io.quarkus.qute.TemplateInstance;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.CookieParam;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -17,6 +17,9 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+/**
+ * Tela de gestão de usuários, restrita a administradores: cadastrar, editar e excluir.
+ */
 @Path("/usuarios")
 public class UsuarioController {
 
@@ -32,21 +35,19 @@ public class UsuarioController {
         return paginaBO.usuarios(sessionId);
     }
 
-    @PUT
-    @Path("/{id}/tipo")
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarTipo(@CookieParam(CookieSessao.NOME) String sessionId,
-                                @PathParam("id") Long id, AlterarTipoDTO request) {
-        usuarioBO.alterarTipo(sessionId, id, request);
-        return Response.noContent().build();
+    public Response cadastrar(@CookieParam(CookieSessao.NOME) String sessionId, UsuarioFormDTO request) {
+        usuarioBO.cadastrarPeloAdmin(sessionId, request);
+        return Response.status(Response.Status.CREATED).build();
     }
 
     @PUT
-    @Path("/{id}/telefone")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarTelefone(@CookieParam(CookieSessao.NOME) String sessionId,
-                                    @PathParam("id") Long id, TelefoneDTO request) {
-        usuarioBO.alterarTelefone(sessionId, id, request);
+    public Response editar(@CookieParam(CookieSessao.NOME) String sessionId,
+                           @PathParam("id") Long id, UsuarioFormDTO request) {
+        usuarioBO.editarPeloAdmin(sessionId, id, request);
         return Response.noContent().build();
     }
 

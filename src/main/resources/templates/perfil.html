@@ -7,44 +7,69 @@
     <link rel="stylesheet" href="perfil.css">
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="footer.css">
-    <script src="pacceli.js" defer></script>
+    <script src="perfil.js" defer></script>
 </head>
 <body>
 
 {#include navbar /}
 
 <div class="container">
-    <div class="info-box" id="perfilBox">
+    <form class="info-box" id="formPerfil" novalidate>
         <h2>👤 Meu Perfil</h2>
-        <p class="subtitulo">Suas informações cadastradas no Paccelli Lanches.</p>
+        <p class="subtitulo">Suas informações cadastradas no Paccelli Lanches. Altere o que precisar e salve.</p>
 
-        <div class="perfil-campo">
+        <label class="perfil-campo">
             <span class="rotulo">Nome completo</span>
-            <span class="valor" id="perfilNome">—</span>
-        </div>
+            <input type="text" name="nome" value="{perfil.nome}" required>
+        </label>
 
-        <div class="perfil-campo">
+        <label class="perfil-campo">
             <span class="rotulo">E-mail</span>
-            <span class="valor" id="perfilEmail">—</span>
-        </div>
+            <input type="email" name="email" value="{perfil.email}" required>
+        </label>
 
-        <div class="perfil-campo">
+        <label class="perfil-campo">
             <span class="rotulo">Telefone</span>
-            <span class="valor" id="perfilTelefone">—</span>
-        </div>
+            <input type="tel" name="telefone" value="{perfil.telefone ?: ''}" placeholder="(XX) XXXXX-XXXX">
+        </label>
 
-        <div class="perfil-campo">
+        <label class="perfil-campo">
             <span class="rotulo">CPF</span>
-            <span class="valor" id="perfilCpf">—</span>
-        </div>
+            <input type="text" name="cpf" value="{perfil.cpf ?: ''}" placeholder="000.000.000-00">
+        </label>
 
-        <div class="perfil-campo">
+        <label class="perfil-campo">
             <span class="rotulo">Data de nascimento</span>
-            <span class="valor" id="perfilDataNascimento">—</span>
-        </div>
+            <input type="date" name="dataNascimento" value="{perfil.dataNascimento ?: ''}">
+        </label>
 
-        <button id="logoutBtn" class="btn-logout">Sair da conta</button>
-    </div>
+        <p class="mensagem" role="status" hidden></p>
+        <button type="submit" class="btn-salvar-perfil">Salvar alterações</button>
+    </form>
+
+    <form class="info-box" id="formSenha" novalidate>
+        <h3>🔑 Alterar senha</h3>
+
+        <label class="perfil-campo">
+            <span class="rotulo">Senha atual</span>
+            <input type="password" name="senhaAtual" autocomplete="current-password" required>
+        </label>
+
+        <label class="perfil-campo">
+            <span class="rotulo">Nova senha</span>
+            <input type="password" name="novaSenha" autocomplete="new-password" placeholder="Mínimo de 6 caracteres" required>
+        </label>
+
+        <label class="perfil-campo">
+            <span class="rotulo">Confirmar nova senha</span>
+            <input type="password" name="confirmarSenha" autocomplete="new-password" required>
+        </label>
+
+        <p class="mensagem" role="status" hidden></p>
+        <button type="submit" class="btn-salvar-perfil">Alterar senha</button>
+    </form>
+
+    <button type="button" id="logoutBtn" class="btn-logout">Sair da conta</button>
 </div>
 
 {#include footer /}

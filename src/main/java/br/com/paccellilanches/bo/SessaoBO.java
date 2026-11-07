@@ -28,6 +28,11 @@ public class SessaoBO {
         return Optional.ofNullable(sessoes.get(sessionId));
     }
 
+    /** Quando o e-mail de um usuário muda, as sessões abertas dele passam a apontar para o novo e-mail. */
+    public void atualizarEmail(String emailAntigo, String emailNovo) {
+        sessoes.replaceAll((sessionId, email) -> email.equals(emailAntigo) ? emailNovo : email);
+    }
+
     public void encerrar(String sessionId) {
         if (sessionId != null) {
             sessoes.remove(sessionId);
