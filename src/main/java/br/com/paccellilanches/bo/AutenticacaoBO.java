@@ -21,10 +21,13 @@ public class AutenticacaoBO {
     @Inject
     SessaoBO sessaoBO;
 
+    @Inject
+    SenhaBO senhaBO;
+
     /** Autentica o usuário e devolve o id da sessão criada. */
     public String login(LoginDTO request) {
         boolean senhaCorreta = usuarioDAO.buscarAtivoPorEmail(request.email())
-                .map(usuario -> usuario.senha.equals(request.senha()))
+                .map(usuario -> senhaBO.confere(request.senha(), usuario.senha))
                 .orElse(false);
         if (!senhaCorreta) {
             throw new NaoAutenticadoException("E-mail ou senha inválidos.");

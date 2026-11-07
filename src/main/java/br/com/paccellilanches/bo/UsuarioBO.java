@@ -48,6 +48,9 @@ public class UsuarioBO {
     @Inject
     SessaoBO sessaoBO;
 
+    @Inject
+    SenhaBO senhaBO;
+
     // ----- Autocadastro (tela /cadastro) -----
 
     @Transactional
@@ -80,14 +83,14 @@ public class UsuarioBO {
     @Transactional
     public void alterarSenha(String sessionId, AlterarSenhaDTO request) {
         Usuario usuario = autenticacaoBO.exigirLogado(sessionId);
-        if (request.senhaAtual() == null || !usuario.senha.equals(request.senhaAtual())) {
+        if (!senhaBO.confere(request.senhaAtual(), usuario.senha)) {
             throw new NegocioException("A senha atual está incorreta.");
         }
         validarSenha(request.novaSenha());
-        if (request.novaSenha().equals(request.senhaAtual())) {
+        if (senhaBO.confere(request.novaSenha(), usuario.senha)) {
             throw new NegocioException("A nova senha deve ser diferente da senha atual.");
         }
-        usuario.senha = request.novaSenha();
+        usuario.senha = senhaBO.gerarHash(request.novaSenha());
     }
 
     // ----- Gerenciamento pelo administrador (tela /usuarios) -----
@@ -135,7 +138,7 @@ public class UsuarioBO {
         }
         if (texto(request.senha()) != null) {
             validarSenha(request.senha());
-            usuario.senha = request.senha();
+            usuario.senha = senhaBO.gerarHash(request.senha());
         }
         aplicarDados(usuario, dados);
         usuario.tipo = tipo;
@@ -275,7 +278,7 @@ public class UsuarioBO {
 
     private Usuario novoUsuario(DadosUsuario dados, String senha, TipoUsuario tipo) {
         return new Usuario(dados.nome(), dados.email(), dados.telefone(), dados.cpf(), dados.dataNascimento(),
-                senha, tipo);
+                senhaBO.gerarHash(senha), tipo);
     }
 
     /** Copia os dados validados para o usuário; se o e-mail mudou, as sessões abertas acompanham. */

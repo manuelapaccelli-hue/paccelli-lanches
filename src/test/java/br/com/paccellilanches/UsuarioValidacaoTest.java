@@ -24,7 +24,7 @@ class UsuarioValidacaoTest {
             "nome curto          | Ab             | novo@teste.com        | (61) 99999-9999 |                |            | O nome deve ter entre",
             "e-mail sem @        | Cliente Teste  | email-invalido        | (61) 99999-9999 |                |            | Informe um e-mail válido",
             "e-mail sem domínio  | Cliente Teste  | cliente@teste         | (61) 99999-9999 |                |            | Informe um e-mail válido",
-            "e-mail repetido     | Cliente Teste  | samuel@paccellilanches.com | (61) 99999-9999 |           |            | Já existe uma conta cadastrada com este e-mail.",
+            "e-mail repetido     | Cliente Teste  | cliente@paccellilanches.com | (61) 99999-9999 |          |            | Já existe uma conta cadastrada com este e-mail.",
             "sem telefone        | Cliente Teste  | novo@teste.com        |                 |                |            | Informe um telefone para contato.",
             "telefone curto      | Cliente Teste  | novo@teste.com        | 1234-5678       |                |            | Informe um telefone válido",
             "celular sem 9       | Cliente Teste  | novo@teste.com        | (61) 89999-9999 |                |            | Informe um telefone válido",
