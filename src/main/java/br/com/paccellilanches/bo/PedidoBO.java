@@ -122,6 +122,9 @@ public class PedidoBO {
             throw new NegocioException("O pedido #" + pedido.id + " já foi " + pedido.status.titulo.toLowerCase()
                     + " e não pode mais mudar de status.");
         }
+        if (novo == pedido.status) {
+            throw new NegocioException("O pedido #" + pedido.id + " já está \"" + novo.titulo + "\".");
+        }
         if (novo != StatusPedido.CANCELADO && novo.ordinal() < pedido.status.ordinal()) {
             throw new NegocioException("O pedido não pode voltar de \"" + pedido.status.titulo
                     + "\" para \"" + novo.titulo + "\".");
